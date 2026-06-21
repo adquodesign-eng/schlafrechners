@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Warum Schlafzyklen in der Schichtarbeit entscheidend sind | schlaf-rechner.de</title>
+  <meta name="description" content="Wissenschaftlich belegter Beitrag zu Schlafzyklen und Schichtarbeit: Schlafphasen, circadiane Fehlausrichtung, IARC-Einstufung und evidenzbasierte Empfehlungen (BAuA, AASM) – mit Grafiken und Quellen.">
+  <script>
+    (function () {
+      var t = localStorage.getItem('schlaf_theme') || 'light';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+  <style>
+:root {
+  --bg:        #F0F4F8;
+  --surface:   #FFFFFF;
+  --text:      #1A202C;
+  --muted:     #718096;
+  --primary:   #3B5BDB;
+  --primary-soft: #EEF2FF;
+  --accent:    #0EA5E9;
+  --warm:      #F59E0B;
+  --warm-soft: #FFFBEB;
+  --border:    #E2E8F0;
+  --shadow:    0 1px 3px rgba(0,0,0,0.07);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+  --radius:    12px;
+  --radius-sm: 8px;
+  --grid-line: rgba(59,91,219,0.04);
+}
+
+body[data-theme="dark"] {
+  --bg:          #0F172A;
+  --surface:     #1E293B;
+  --text:        #F1F5F9;
+  --muted:       #94A3B8;
+  --border:      #334155;
+  --primary-soft: rgba(59,91,219,0.15);
+  --warm-soft:   rgba(245,158,11,0.12);
+  --grid-line:   rgba(148,163,184,0.05);
+  --shadow:      0 1px 3px rgba(0,0,0,0.4);
+  --shadow-md:   0 4px 16px rgba(0,0,0,0.45);
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--text);
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 40px 40px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  transition: background-color .25s ease, color .25s ease;
+}
+
+a { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+img { max-width: 100%; }
+
+h1, h2, h3, h4 { line-height: 1.25; color: var(--text); }
+h1 { font-size: clamp(1.9rem, 4.5vw, 3rem); letter-spacing: -.02em; margin: 0 0 .5rem; }
+h2 { font-size: clamp(1.5rem, 3vw, 2rem); letter-spacing: -.015em; margin: 0 0 .75rem; }
+h3 { font-size: 1.2rem; margin: 0 0 .5rem; }
+p  { margin: 0 0 1rem; }
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.container { width: min(1120px, 92vw); margin-inline: auto; }
+
+/* ---------- Header ---------- */
+header.site {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: 64px;
+}
+.logo {
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  white-space: nowrap;
+}
+.logo:hover { text-decoration: none; }
+.logo .moon { font-size: 1.35rem; }
+
+nav.main { display: flex; align-items: center; gap: .35rem; }
+nav.main a {
+  color: var(--muted);
+  font-weight: 500;
+  padding: .5rem .8rem;
+  border-radius: var(--radius-sm);
+  transition: background .15s, color .15s;
+}
+nav.main a:hover { color: var(--text); background: var(--primary-soft); text-decoration: none; }
+nav.main a.active { color: var(--primary); background: var(--primary-soft); }
+
+.header-actions { display: flex; align-items: center; gap: .5rem; }
+
+.icon-btn {
+  width: 40px; height: 40px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 1.15rem;
+  color: var(--text);
+  transition: border-color .15s, transform .1s;
+}
+.icon-btn:hover { border-color: var(--primary); }
+.icon-btn:active { transform: scale(.94); }
+
+.hamburger { display: none; }
+
+/* Mobile-Nav-Panel */
+.mobile-nav {
+  display: none;
+  flex-direction: column;
+  gap: .25rem;
+  padding: .5rem 0 1rem;
+  border-top: 1px solid var(--border);
+}
+.mobile-nav a {
+  padding: .7rem .9rem;
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-weight: 500;
+}
+.mobile-nav a:hover { background: var(--primary-soft); text-decoration: none; }
+.mobile-nav.open { display: flex; }
+
+/* ---------- Footer ---------- */
+footer.site {
+  margin-top: auto;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 2.5rem 0 2rem;
+}
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem 1.4rem;
+  margin-bottom: 1.25rem;
+}
+.footer-links a { color: var(--muted); font-weight: 500; }
+.footer-links a:hover { color: var(--primary); }
+.footer-note { color: var(--muted); font-size: .9rem; margin: 0; }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  font: inherit;
+  font-weight: 600;
+  padding: .8rem 1.4rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform .1s, box-shadow .15s, background .15s, border-color .15s;
+}
+.btn:hover { text-decoration: none; }
+.btn:active { transform: translateY(1px); }
+.btn-primary { background: var(--primary); color: #fff; box-shadow: var(--shadow); }
+.btn-primary:hover { background: #2f4dc4; }
+.btn-ghost { background: var(--surface); color: var(--text); border-color: var(--border); }
+.btn-ghost:hover { border-color: var(--primary); color: var(--primary); }
+.btn-warm { background: var(--warm); color: #3a2606; }
+.btn-warm:hover { filter: brightness(1.05); }
+
+/* ---------- Karten / Sektionen ---------- */
+.section { padding: 3.5rem 0; }
+.section-sm { padding: 2.25rem 0; }
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  font-size: .75rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: .6rem;
+}
+.lead { font-size: 1.1rem; color: var(--muted); max-width: 60ch; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+}
+
+.grid { display: grid; gap: 1.1rem; }
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+
+.page-head { padding: 2.5rem 0 1.5rem; }
+
+/* ---------- Cookie-Banner ---------- */
+.cookie-banner {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 200;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -4px 20px rgba(0,0,0,.1);
+  padding: 1rem 0;
+  transform: translateY(110%);
+  transition: transform .35s ease;
+}
+.cookie-banner.show { transform: translateY(0); }
+.cookie-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.cookie-text { color: var(--muted); font-size: .92rem; margin: 0; max-width: 60ch; }
+.cookie-text strong { color: var(--text); }
+.cookie-actions { display: flex; gap: .6rem; flex-wrap: wrap; }
+.cookie-actions .btn { padding: .6rem 1.1rem; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 820px) {
+  nav.main { display: none; }
+  .hamburger { display: inline-flex; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: .001ms !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
+}
+
+
+
+.article-page { max-width: 820px; }
+.article-page .meta-line { color: var(--muted); font-size: .9rem; margin-bottom: 1rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+.article-page h2 { margin-top: 2.5rem; }
+.article-page h3 { margin-top: 1.5rem; }
+.article-page p { color: var(--text); }
+.article-page .lead { color: var(--muted); }
+.figure { margin: 1.75rem 0; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); padding: 1.25rem 1.25rem .9rem; box-shadow: var(--shadow); }
+.figure svg { width: 100%; height: auto; display: block; }
+.figure figcaption { color: var(--muted); font-size: .82rem; margin-top: .7rem; line-height: 1.5; }
+.figure figcaption strong { color: var(--text); }
+.keybox { display: flex; gap: 1rem; flex-wrap: wrap; margin: .5rem 0 0; }
+.keybox span { display: inline-flex; align-items: center; gap: .4rem; font-size: .82rem; color: var(--muted); }
+.keybox .sw { width: 12px; height: 12px; border-radius: 3px; }
+
+/* SVG-Themefarben */
+.svg-bg { fill: var(--bg); }
+.svg-grid { stroke: var(--border); stroke-width: 1; }
+.svg-axis { stroke: var(--muted); stroke-width: 1.5; }
+.svg-label { fill: var(--muted); font: 600 12px system-ui, sans-serif; }
+.svg-label-sm { fill: var(--muted); font: 500 10px system-ui, sans-serif; }
+.svg-title { fill: var(--text); font: 700 13px system-ui, sans-serif; }
+.svg-line { fill: none; stroke: var(--primary); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+.seg-n1 { fill: #93c5fd; } .seg-n2 { fill: #60a5fa; } .seg-n3 { fill: #3b5bdb; } .seg-rem { fill: #f59e0b; }
+.blk-work { fill: var(--muted); opacity: .35; }
+.blk-sleep { fill: #3b5bdb; opacity: .85; }
+.blk-nap { fill: #f59e0b; opacity: .85; }
+.blk-track { fill: var(--border); }
+
+.risk-list { list-style: none; padding: 0; margin: 1rem 0; display: grid; gap: .6rem; }
+.risk-list li { display: flex; gap: .7rem; align-items: flex-start; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: .8rem 1rem; }
+.risk-list .ic { font-size: 1.2rem; }
+.risk-list p { margin: 0; font-size: .92rem; }
+.risk-list strong { color: var(--text); }
+
+.callout { background: var(--warm-soft); border: 1px solid color-mix(in srgb, var(--warm) 35%, transparent); border-radius: var(--radius); padding: 1.1rem 1.3rem; margin: 1.5rem 0; }
+.callout p { margin: 0; }
+
+.rec-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: .8rem; margin: 1.2rem 0; }
+@media (max-width: 640px) { .rec-grid { grid-template-columns: 1fr; } }
+.rec { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1rem; }
+.rec h4 { margin: 0 0 .3rem; font-size: 1rem; }
+.rec p { margin: 0; color: var(--muted); font-size: .9rem; }
+
+.sources { margin-top: 2.5rem; border-top: 1px solid var(--border); padding-top: 1.5rem; }
+.sources h2 { margin-top: 0; }
+.sources ol { padding-left: 1.3rem; color: var(--muted); font-size: .9rem; }
+.sources li { margin-bottom: .6rem; }
+.sources a { word-break: break-word; }
+.disclaimer { color: var(--muted); font-size: .85rem; margin-top: 1.5rem; font-style: italic; }
+</style>
+</head>
+<body>
+  <header class="site">
+    <div class="container">
+      <div class="header-inner">
+        <a class="logo" href="index.html"><span class="moon">🌙</span> schlaf-rechner.de</a>
+        <nav class="main" aria-label="Hauptnavigation"><a href="index.html">Rechner</a><a href="schichtplan.html">Schichtplan</a><a href="wissen.html" class="active">Wissen</a><a href="faq.html">FAQ</a><a href="hilfe.html">Hilfe</a></nav>
+        <div class="header-actions">
+          <button class="icon-btn" id="themeBtn" type="button" aria-label="Hell-/Dunkelmodus umschalten">🌙</button>
+          <button class="icon-btn hamburger" id="hamburger" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobileNav">☰</button>
+        </div>
+      </div>
+      <nav class="mobile-nav" id="mobileNav" aria-label="Mobile Navigation"><a href="index.html">Rechner</a><a href="schichtplan.html">Schichtplan</a><a href="wissen.html">Wissen</a><a href="faq.html">FAQ</a><a href="hilfe.html">Hilfe</a></nav>
+    </div>
+  </header>
+
+  <section class="page-head">
+    <div class="container article-page">
+      <p class="eyebrow">Schichtarbeit · Mit Quellen</p>
+      <h1>Warum Schlafzyklen in der Schichtarbeit entscheidend sind</h1>
+      <div class="meta-line">
+        <span>⏱ ca. 12 Min. Lesezeit</span>
+        <span>🔬 Belegt mit wissenschaftlichen Quellen</span>
+        <span>🗓 Stand: 2026</span>
+      </div>
+      <p class="lead">Etwa 15–30&nbsp;% der Beschäftigten in Europa und den USA arbeiten im Schichtdienst. Wer nachts oder in wechselnden Schichten arbeitet, schläft gegen die innere Uhr – mit messbaren Folgen für Schlafqualität und Gesundheit. Dieser Beitrag erklärt, wie Schlafzyklen funktionieren, warum ihr Timing in der Schichtarbeit besonders zählt und welche Strategien die Forschung empfiehlt.</p>
+    </div>
+  </section>
+
+  <section class="section-sm article-page-wrap" style="padding-top:.5rem">
+    <div class="container article-page">
+
+      <h2>Wie ein Schlafzyklus aufgebaut ist</h2>
+      <p>Schlaf ist kein gleichmäßiger Zustand, sondern verläuft in Zyklen. Ein vollständiger Zyklus dauert im Mittel rund 90&nbsp;Minuten (individuell etwa 70–120&nbsp;Minuten); pro Nacht durchlaufen Erwachsene typischerweise vier bis sechs davon.<sup>[1]</sup> Jeder Zyklus führt durch mehrere Phasen: den leichten Übergangsschlaf (N1), den stabilen Leichtschlaf (N2), den körperlich erholsamen Tiefschlaf (N3, „Slow-Wave-Sleep“) und die Traumphase (REM).</p>
+
+      <figure class="figure">
+        <svg viewBox="0 0 740 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Hypnogramm: Schlafphasen über fünf Zyklen einer Nacht">
+  <text x="20" y="22" class="svg-title">Schlafphasen über eine Nacht (5 Zyklen à ~90 Min.)</text>
+  <text x="84" y="39" text-anchor="end" class="svg-label-sm" dominant-baseline="middle">Wach</text><line x1="92" y1="38" x2="712" y2="38" class="svg-grid" stroke-dasharray="3 4"/><text x="84" y="71" text-anchor="end" class="svg-label-sm" dominant-baseline="middle">REM</text><line x1="92" y1="70" x2="712" y2="70" class="svg-grid" stroke-dasharray="3 4"/><text x="84" y="103" text-anchor="end" class="svg-label-sm" dominant-baseline="middle">N1</text><line x1="92" y1="102" x2="712" y2="102" class="svg-grid" stroke-dasharray="3 4"/><text x="84" y="141" text-anchor="end" class="svg-label-sm" dominant-baseline="middle">N2</text><line x1="92" y1="140" x2="712" y2="140" class="svg-grid" stroke-dasharray="3 4"/><text x="84" y="189" text-anchor="end" class="svg-label-sm" dominant-baseline="middle">Tiefschlaf</text><line x1="92" y1="188" x2="712" y2="188" class="svg-grid" stroke-dasharray="3 4"/>
+  <line x1="92" y1="206" x2="712" y2="206" class="svg-axis"/>
+  <line x1="92.0" y1="206" x2="92.0" y2="212" class="svg-axis"/><text x="92.0" y="226" text-anchor="middle" class="svg-label-sm">0 h</text><line x1="174.7" y1="206" x2="174.7" y2="212" class="svg-axis"/><text x="174.7" y="226" text-anchor="middle" class="svg-label-sm">1 h</text><line x1="257.3" y1="206" x2="257.3" y2="212" class="svg-axis"/><text x="257.3" y="226" text-anchor="middle" class="svg-label-sm">2 h</text><line x1="340.0" y1="206" x2="340.0" y2="212" class="svg-axis"/><text x="340.0" y="226" text-anchor="middle" class="svg-label-sm">3 h</text><line x1="422.7" y1="206" x2="422.7" y2="212" class="svg-axis"/><text x="422.7" y="226" text-anchor="middle" class="svg-label-sm">4 h</text><line x1="505.3" y1="206" x2="505.3" y2="212" class="svg-axis"/><text x="505.3" y="226" text-anchor="middle" class="svg-label-sm">5 h</text><line x1="588.0" y1="206" x2="588.0" y2="212" class="svg-axis"/><text x="588.0" y="226" text-anchor="middle" class="svg-label-sm">6 h</text><line x1="670.7" y1="206" x2="670.7" y2="212" class="svg-axis"/><text x="670.7" y="226" text-anchor="middle" class="svg-label-sm">7 h</text>
+  <polyline points="92.0,38 98.9,38 98.9,102 108.5,102 108.5,140 122.3,140 122.3,188 163.6,188 163.6,140 182.9,140 182.9,70 199.5,70 199.5,140 216.0,140 216.0,188 268.4,188 268.4,140 295.9,140 295.9,70 323.5,70 323.5,140 342.8,140 342.8,188 378.6,188 378.6,140 406.1,140 406.1,70 444.7,70 444.7,140 466.8,140 466.8,140 505.3,140 505.3,70 566.0,70 566.0,38 574.2,38 574.2,140 604.5,140 604.5,70 701.0,70 701.0,38 712.0,38" class="svg-line"/>
+</svg>
+        <figcaption><strong>Abb.&nbsp;1:</strong> Stilisiertes Hypnogramm. Der Tiefschlaf (N3) überwiegt in der ersten Nachthälfte, die REM-Phasen werden gegen Morgen länger. Am Ende eines Zyklus liegt der Schlaf nahe dem Wachzustand – der günstigste Moment zum Aufwachen. Schematische Darstellung nach Carskadon &amp; Dement sowie StatPearls (Physiology, Sleep Stages).<sup>[1][2]</sup></figcaption>
+      </figure>
+
+      <p>Die Phasen sind über die Nacht ungleich verteilt: Tiefschlaf (N3) konzentriert sich auf das erste Nachtdrittel, während die REM-Anteile gegen Morgen zunehmen.<sup>[2]</sup> Über die gesamte Nacht entfallen grob 5&nbsp;% auf N1, etwa die Hälfte auf N2, rund 15–20&nbsp;% auf den Tiefschlaf und 20–25&nbsp;% auf REM.<sup>[2]</sup></p>
+
+      <figure class="figure">
+        <svg viewBox="0 0 740 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Anteile der Schlafphasen am Gesamtschlaf">
+  <text x="20" y="24" class="svg-title">Typische Anteile der Schlafphasen (Erwachsene)</text>
+  <rect x="30" y="40" width="34.0" height="46" class="seg-n1" rx="2"/><text x="47.0" y="68" text-anchor="middle" fill="#fff" font="700 13px system-ui">N1 5%</text><rect x="64.0" y="40" width="340.0" height="46" class="seg-n2" rx="2"/><text x="234.0" y="68" text-anchor="middle" fill="#fff" font="700 13px system-ui">N2 50%</text><rect x="404.0" y="40" width="136.0" height="46" class="seg-n3" rx="2"/><text x="472.0" y="68" text-anchor="middle" fill="#fff" font="700 13px system-ui">N3 20%</text><rect x="540.0" y="40" width="170.0" height="46" class="seg-rem" rx="2"/><text x="625.0" y="68" text-anchor="middle" fill="#fff" font="700 13px system-ui">REM 25%</text>
+</svg>
+        <figcaption><strong>Abb.&nbsp;2:</strong> Ungefähre Anteile der Schlafphasen am Gesamtschlaf bei gesunden Erwachsenen (Richtwerte; individuell und altersabhängig). Quelle: Medscape, „Normal Sleep, Sleep Physiology“ sowie StatPearls.<sup>[1][2]</sup></figcaption>
+      </figure>
+
+      <h2>Warum das Aufwach-Timing zählt: Schlafträgheit</h2>
+      <p>Wird man aus dem Tiefschlaf gerissen, folgt häufig die sogenannte Schlafträgheit – ein Zustand von Benommenheit und herabgesetzter Leistungsfähigkeit, der je nach Quelle 30&nbsp;Minuten bis etwa eine Stunde anhalten kann.<sup>[1]</sup> Am Ende eines Zyklus ist der Schlaf dagegen am leichtesten; ein Wecken zu diesem Zeitpunkt fällt subjektiv leichter. Genau hier setzt die Logik des Schlafrechners an: Er legt Aufwach- bzw. Einschlafzeiten auf das Ende ganzer Zyklen.</p>
+      <div class="callout">
+        <p><strong>Wichtig einzuordnen:</strong> Die 90-Minuten-Regel ist ein bewährter Durchschnitt, keine exakte Konstante. Zyklus-Länge und Phasenverteilung schwanken zwischen Personen, Nächten und mit dem Alter. Der Rechner liefert deshalb Orientierung, keine medizinische Punktlandung.</p>
+      </div>
+
+      <h2>Was Schichtarbeit mit der inneren Uhr macht</h2>
+      <p>Der menschliche Körper folgt einem circadianen Rhythmus von etwa 24&nbsp;Stunden, der unter anderem Wachheit, Körpertemperatur und Hormonausschüttung steuert. Nacht- und Wechselschichten zwingen Schlaf und Wachsein gegen diesen Rhythmus – Fachleute sprechen von circadianer Fehlausrichtung.<sup>[3]</sup> Eine vollständige Anpassung der Körperfunktionen an Nachtarbeit findet dabei nicht statt: Selbst nach vielen Nachtschichten bleibt es Arbeit gegen die innere Uhr, und vorhandene Teilanpassungen werden an freien Tagen wieder rückgängig gemacht.<sup>[5]</sup></p>
+      <p>Die Folge ist messbar: Etwa jede dritte in Schichtarbeit tätige Person ist von Schlafstörungen betroffen, und bis zu 90&nbsp;% berichten über regelmäßige Müdigkeit oder Schläfrigkeit am Arbeitsplatz. Die Schätzungen zur Häufigkeit der eigentlichen Schichtarbeitsstörung (Shift Work Disorder) liegen je nach Definition zwischen rund 5 und 20&nbsp;%.<sup>[6]</sup></p>
+
+      <h2>Gesundheitliche Risiken – der Forschungsstand</h2>
+      <p>Die Internationale Agentur für Krebsforschung (IARC) der WHO bewertete Nachtschichtarbeit 2019 erneut und stufte sie als „wahrscheinlich krebserregend für den Menschen“ (Gruppe 2A) ein – auf Basis begrenzter Evidenz beim Menschen (u.&nbsp;a. Brust-, Prostata-, Dick- und Enddarmkrebs) sowie hinreichender Evidenz aus Tierstudien.<sup>[4]</sup> Darüber hinaus ist Schichtarbeit mit weiteren Risiken verknüpft:</p>
+
+      <ul class="risk-list">
+        <li><span class="ic">🫀</span><p><strong>Herz-Kreislauf-System:</strong> erhöhtes Risiko für Bluthochdruck und Herz-Kreislauf-Erkrankungen bei gestörtem circadianem Rhythmus.<sup>[3]</sup></p></li>
+        <li><span class="ic">🧬</span><p><strong>Krebs:</strong> Nachtschichtarbeit als wahrscheinliches Karzinogen (IARC-Gruppe 2A), mit Hinweisen v.&nbsp;a. auf Brust-, Prostata- und Darmkrebs.<sup>[4]</sup></p></li>
+        <li><span class="ic">🩸</span><p><strong>Stoffwechsel:</strong> Zusammenhänge mit Übergewicht, Typ-2-Diabetes und Magen-Darm-Beschwerden in Übersichtsarbeiten.<sup>[3][6]</sup></p></li>
+        <li><span class="ic">🧠</span><p><strong>Psyche &amp; Kognition:</strong> häufiger Schlaflosigkeit, depressive Symptome und nachlassende Wachheit/Leistung – mit Sicherheitsrisiken bis hin zu Sekundenschlaf.<sup>[3]</sup></p></li>
+      </ul>
+      <p>Diese Befunde sind Risikobewertungen auf Bevölkerungsebene – sie sagen nichts über das individuelle Schicksal einer einzelnen Person aus. Gute Schicht- und Schlafgestaltung kann das Risiko verringern, auch wenn sie es nicht vollständig beseitigt.</p>
+
+      <h2 id="empfehlungen">Schlaf je nach Schichttyp planen</h2>
+      <p>Weil jede Schicht das Schlaffenster verschiebt, lohnt sich bewusste Planung. Die folgende Übersicht zeigt typische, empfohlene Schlafzeiten relativ zur Schicht:</p>
+
+      <figure class="figure">
+        <svg viewBox="0 0 740 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Empfohlene Schlaffenster je Schichttyp über 24 Stunden">
+  <text x="20" y="24" class="svg-title">Empfohlene Schlaffenster je Schichttyp (24-Stunden-Tag)</text>
+  <text x="20" y="72" class="svg-label">🟢 Frühschicht</text><rect x="70" y="60" width="642" height="16" class="blk-track" rx="4"/><rect x="230.5" y="60" width="214.0" height="16" class="blk-work" rx="4"/><rect x="645.1" y="60" width="66.9" height="16" class="blk-sleep" rx="4"/><rect x="70.0" y="60" width="133.8" height="16" class="blk-sleep" rx="4"/><text x="20" y="108" class="svg-label">🟠 Spätschicht</text><rect x="70" y="96" width="642" height="16" class="blk-track" rx="4"/><rect x="444.5" y="96" width="214.0" height="16" class="blk-work" rx="4"/><rect x="96.8" y="96" width="200.6" height="16" class="blk-sleep" rx="4"/><text x="20" y="144" class="svg-label">🔵 Nachtschicht</text><rect x="70" y="132" width="642" height="16" class="blk-track" rx="4"/><rect x="658.5" y="132" width="53.5" height="16" class="blk-work" rx="4"/><rect x="70.0" y="132" width="160.5" height="16" class="blk-work" rx="4"/><rect x="257.2" y="132" width="200.7" height="16" class="blk-sleep" rx="4"/><rect x="551.5" y="132" width="16.0" height="16" class="blk-nap" rx="4"/>
+  <line x1="70.0" y1="158" x2="70.0" y2="164" class="svg-axis"/><text x="70.0" y="178" text-anchor="middle" class="svg-label-sm">0:00</text><line x1="150.2" y1="158" x2="150.2" y2="164" class="svg-axis"/><text x="150.2" y="178" text-anchor="middle" class="svg-label-sm">3:00</text><line x1="230.5" y1="158" x2="230.5" y2="164" class="svg-axis"/><text x="230.5" y="178" text-anchor="middle" class="svg-label-sm">6:00</text><line x1="310.8" y1="158" x2="310.8" y2="164" class="svg-axis"/><text x="310.8" y="178" text-anchor="middle" class="svg-label-sm">9:00</text><line x1="391.0" y1="158" x2="391.0" y2="164" class="svg-axis"/><text x="391.0" y="178" text-anchor="middle" class="svg-label-sm">12:00</text><line x1="471.2" y1="158" x2="471.2" y2="164" class="svg-axis"/><text x="471.2" y="178" text-anchor="middle" class="svg-label-sm">15:00</text><line x1="551.5" y1="158" x2="551.5" y2="164" class="svg-axis"/><text x="551.5" y="178" text-anchor="middle" class="svg-label-sm">18:00</text><line x1="631.8" y1="158" x2="631.8" y2="164" class="svg-axis"/><text x="631.8" y="178" text-anchor="middle" class="svg-label-sm">21:00</text><line x1="712.0" y1="158" x2="712.0" y2="164" class="svg-axis"/><text x="712.0" y="178" text-anchor="middle" class="svg-label-sm">24:00</text><line x1="70" y1="158" x2="712" y2="158" class="svg-axis"/>
+</svg>
+        <figcaption><strong>Abb.&nbsp;3:</strong> Orientierende Schlaffenster über 24&nbsp;Stunden. Grau = Arbeitszeit, Blau = Hauptschlaf, Orange = Kurzschlaf (Nap) vor der Nachtschicht. Vor Früh-/Spätschicht liegt der Schlaf nachts davor, nach der Nachtschicht am Morgen danach. Schematisch nach arbeitswissenschaftlichen Empfehlungen der BAuA sowie AASM/SRS.<sup>[5][7]</sup></figcaption>
+        <div class="keybox">
+          <span><span class="sw" style="background:var(--muted);opacity:.5"></span>Arbeitszeit</span>
+          <span><span class="sw" style="background:#3b5bdb"></span>Hauptschlaf</span>
+          <span><span class="sw" style="background:#f59e0b"></span>Kurzschlaf (Nap)</span>
+        </div>
+      </figure>
+
+      <h2>Was die Forschung empfiehlt</h2>
+      <p>Aus arbeitswissenschaftlichen Erkenntnissen – etwa der Bundesanstalt für Arbeitsschutz und Arbeitsmedizin (BAuA) und der Leitlinie der AASM/SRS – lassen sich konkrete Empfehlungen ableiten:</p>
+
+      <div class="rec-grid">
+        <div class="rec"><h4>↻ Vorwärts rotieren</h4><p>Die Folge Früh → Spät → Nacht ist verträglicher als die Rückwärtsrotation und entspricht der natürlichen Tendenz der inneren Uhr.<sup>[5][7]</sup></p></div>
+        <div class="rec"><h4>🌙 Nachtschichten begrenzen</h4><p>Möglichst nicht mehr als 2–3 Nachtschichten in Folge, danach eine möglichst lange Ruhephase von mindestens 24&nbsp;Stunden.<sup>[5]</sup></p></div>
+        <div class="rec"><h4>😴 Strategisch napsen</h4><p>Ein kurzes Nickerchen (etwa 20–30&nbsp;Min.) vor oder während der Nachtschicht verbessert nachweislich die Wachheit.<sup>[7][8]</sup></p></div>
+        <div class="rec"><h4>☕ Koffein klug timen</h4><p>Koffein eher zu Beginn der Schicht, in der zweiten Hälfte meiden, damit der spätere Schlaf nicht leidet.<sup>[8]</sup></p></div>
+        <div class="rec"><h4>💡 Licht nutzen</h4><p>Helles Licht zur richtigen Zeit und Dunkelheit/Schlafbrille am Morgen helfen, den Rhythmus zu stabilisieren.<sup>[7][8]</sup></p></div>
+        <div class="rec"><h4>🕕 Frühschicht nicht zu früh</h4><p>Ein späterer Frühbeginn (z.&nbsp;B. 6:30 statt 6:00&nbsp;Uhr) verlängert den oft zu kurzen Nachtschlaf davor.<sup>[5]</sup></p></div>
+      </div>
+
+      <div class="callout">
+        <p>Setze diese Prinzipien direkt um: Im <a href="schichtplan.html"><strong>Schichtplaner</strong></a> erstellst du dir aus deinen Schichtzeiten einen persönlichen Schlafplan für 1–2&nbsp;Wochen – inklusive zyklus-orientierter Schlaffenster und PDF zum Ausdrucken.</p>
+      </div>
+
+      <p class="disclaimer">Dieser Beitrag dient der Information und ersetzt keine ärztliche Beratung. Bei anhaltenden Schlafproblemen oder Verdacht auf eine Schichtarbeitsstörung wende dich an eine Ärztin oder einen Arzt bzw. an arbeitsmedizinische Stellen.</p>
+
+      <div class="sources">
+        <h2>Quellen</h2>
+        <ol>
+          <li>StatPearls – Physiology, Sleep Stages (NCBI Bookshelf, 2024): Zyklusdauer ~90–110&nbsp;Min., 4–6 Zyklen/Nacht, Schlafträgheit. <a href="https://www.ncbi.nlm.nih.gov/books/NBK526132/" target="_blank" rel="noopener">ncbi.nlm.nih.gov/books/NBK526132</a></li>
+          <li>Medscape – Normal Sleep, Sleep Physiology and Sleep Deprivation: Phasenanteile (N1 2–5&nbsp;%, N2 45–55&nbsp;%, N3 10–20&nbsp;%, REM 20–25&nbsp;%), Verteilung über die Nacht. <a href="https://emedicine.medscape.com/article/1188226-overview" target="_blank" rel="noopener">emedicine.medscape.com/article/1188226-overview</a></li>
+          <li>Boivin DB et al. – Impacts of shift work on sleep and circadian rhythms (Übersichtsarbeit, PubMed 25246026); sowie Reviews zu Herz-Kreislauf-/Stoffwechselrisiken. <a href="https://pubmed.ncbi.nlm.nih.gov/25246026/" target="_blank" rel="noopener">pubmed.ncbi.nlm.nih.gov/25246026</a></li>
+          <li>IARC/WHO – Monograph Vol.&nbsp;124, „Night Shift Work“ (2020): Einstufung als Gruppe 2A. <a href="https://www.iarc.who.int/news-events/iarc-monographs-volume-124-night-shift-work/" target="_blank" rel="noopener">iarc.who.int</a> · Zusammenfassung: Lancet Oncology 2019.</li>
+          <li>BAuA – Leitfaden bzw. Empfehlungen zur Gestaltung von Nacht- und Schichtarbeit: Vorwärtsrotation, ≤&nbsp;2–3 Nachtschichten in Folge, Ruhephasen, Frühschichtbeginn, keine echte Anpassung an Nachtarbeit. <a href="https://www.baua.de/DE/Themen/Arbeitsgestaltung/Arbeitszeit/Nacht-und-Schichtarbeit" target="_blank" rel="noopener">baua.de</a></li>
+          <li>Reviews zur Prävalenz: ~1 von 3 mit Insomnie, bis 90&nbsp;% mit Müdigkeit, Shift Work Disorder ~5–20&nbsp;% (PMC4970219; SHIFTPLAN-Studie). <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4970219/" target="_blank" rel="noopener">ncbi.nlm.nih.gov/pmc/articles/PMC4970219</a></li>
+          <li>AASM &amp; Sleep Research Society – Guidance on work shift duration (J Clin Sleep Med, 2021): Rotationsrichtung, Schichtdauer, Napping. <a href="https://jcsm.aasm.org/doi/10.5664/jcsm.9512" target="_blank" rel="noopener">jcsm.aasm.org/doi/10.5664/jcsm.9512</a></li>
+          <li>Prevention of fatigue and insomnia in shift workers – review of non-pharmacological measures (PMC4970219): Napping, Lichtexposition, Schlafhygiene, Koffein-Timing. <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4970219/" target="_blank" rel="noopener">ncbi.nlm.nih.gov/pmc/articles/PMC4970219</a></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site">
+    <div class="container">
+      <div class="footer-links"><a href="index.html">Rechner</a><a href="schichtplan.html">Schichtplan</a><a href="wissen.html">Wissenswertes</a><a href="faq.html">FAQ</a><a href="hilfe.html">Hilfe</a><a href="kontakt.html">Kontakt</a><a href="ueber-uns.html">Über uns</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></div>
+      <p class="footer-note">© 2025 schlaf-rechner.de · Keine medizinische Beratung · Keine Garantie auf Richtigkeit</p>
+    </div>
+  </footer>
+
+  <div class="cookie-banner" id="cookieBanner" role="dialog" aria-label="Cookie-Hinweis">
+    <div class="container">
+      <div class="cookie-inner">
+        <p class="cookie-text"><strong>Diese Seite arbeitet datensparsam.</strong> Notwendige Speicherung (z.&nbsp;B. dein Theme) bleibt lokal auf deinem Gerät. Details in der <a href="datenschutz.html">Datenschutzerklärung</a>.</p>
+        <div class="cookie-actions">
+          <button class="btn btn-ghost" id="cookieEssential" type="button">Nur notwendige</button>
+          <button class="btn btn-primary" id="cookieAccept" type="button">Alle akzeptieren</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      // --- Theme-Toggle ---
+      var themeBtn = document.getElementById('themeBtn');
+      function applyTheme(t) {
+        document.documentElement.setAttribute('data-theme', t);
+        document.body.setAttribute('data-theme', t);
+        if (themeBtn) themeBtn.textContent = (t === 'dark') ? '☀️' : '🌙';
+      }
+      applyTheme(localStorage.getItem('schlaf_theme') || 'light');
+      if (themeBtn) {
+        themeBtn.addEventListener('click', function () {
+          var next = (document.body.getAttribute('data-theme') === 'dark') ? 'light' : 'dark';
+          localStorage.setItem('schlaf_theme', next);
+          applyTheme(next);
+        });
+      }
+
+      // --- Mobile-Navigation ---
+      var burger = document.getElementById('hamburger');
+      var mnav = document.getElementById('mobileNav');
+      if (burger && mnav) {
+        burger.addEventListener('click', function () {
+          var open = mnav.classList.toggle('open');
+          burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+          burger.textContent = open ? '✕' : '☰';
+        });
+      }
+
+      // --- Cookie-Banner ---
+      var banner = document.getElementById('cookieBanner');
+      if (banner && !localStorage.getItem('cookie-consent')) {
+        setTimeout(function () { banner.classList.add('show'); }, 600);
+      }
+      function consent(value) {
+        localStorage.setItem('cookie-consent', value);
+        if (banner) banner.classList.remove('show');
+      }
+      var acc = document.getElementById('cookieAccept');
+      var ess = document.getElementById('cookieEssential');
+      if (acc) acc.addEventListener('click', function () { consent('all'); });
+      if (ess) ess.addEventListener('click', function () { consent('essential'); });
+    })();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Schlafrechner – Optimale Aufwach- und Einschlafzeiten berechnen</title>
+  <meta name="description" content="Berechne mit dem Schlafrechner optimale Aufwach- und Einschlafzeiten nach 90-Minuten-Schlafzyklen. Mit Einschlaf-Timer und Entspannungsgeräuschen. Kostenlos und lokal im Browser.">
+  <script>
+    (function () {
+      var t = localStorage.getItem('schlaf_theme') || 'light';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+  <style>
+:root {
+  --bg:        #F0F4F8;
+  --surface:   #FFFFFF;
+  --text:      #1A202C;
+  --muted:     #718096;
+  --primary:   #3B5BDB;
+  --primary-soft: #EEF2FF;
+  --accent:    #0EA5E9;
+  --warm:      #F59E0B;
+  --warm-soft: #FFFBEB;
+  --border:    #E2E8F0;
+  --shadow:    0 1px 3px rgba(0,0,0,0.07);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+  --radius:    12px;
+  --radius-sm: 8px;
+  --grid-line: rgba(59,91,219,0.04);
+}
+
+body[data-theme="dark"] {
+  --bg:          #0F172A;
+  --surface:     #1E293B;
+  --text:        #F1F5F9;
+  --muted:       #94A3B8;
+  --border:      #334155;
+  --primary-soft: rgba(59,91,219,0.15);
+  --warm-soft:   rgba(245,158,11,0.12);
+  --grid-line:   rgba(148,163,184,0.05);
+  --shadow:      0 1px 3px rgba(0,0,0,0.4);
+  --shadow-md:   0 4px 16px rgba(0,0,0,0.45);
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--text);
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 40px 40px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  transition: background-color .25s ease, color .25s ease;
+}
+
+a { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+img { max-width: 100%; }
+
+h1, h2, h3, h4 { line-height: 1.25; color: var(--text); }
+h1 { font-size: clamp(1.9rem, 4.5vw, 3rem); letter-spacing: -.02em; margin: 0 0 .5rem; }
+h2 { font-size: clamp(1.5rem, 3vw, 2rem); letter-spacing: -.015em; margin: 0 0 .75rem; }
+h3 { font-size: 1.2rem; margin: 0 0 .5rem; }
+p  { margin: 0 0 1rem; }
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.container { width: min(1120px, 92vw); margin-inline: auto; }
+
+/* ---------- Header ---------- */
+header.site {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: 64px;
+}
+.logo {
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  white-space: nowrap;
+}
+.logo:hover { text-decoration: none; }
+.logo .moon { font-size: 1.35rem; }
+
+nav.main { display: flex; align-items: center; gap: .35rem; }
+nav.main a {
+  color: var(--muted);
+  font-weight: 500;
+  padding: .5rem .8rem;
+  border-radius: var(--radius-sm);
+  transition: background .15s, color .15s;
+}
+nav.main a:hover { color: var(--text); background: var(--primary-soft); text-decoration: none; }
+nav.main a.active { color: var(--primary); background: var(--primary-soft); }
+
+.header-actions { display: flex; align-items: center; gap: .5rem; }
+
+.icon-btn {
+  width: 40px; height: 40px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 1.15rem;
+  color: var(--text);
+  transition: border-color .15s, transform .1s;
+}
+.icon-btn:hover { border-color: var(--primary); }
+.icon-btn:active { transform: scale(.94); }
+
+.hamburger { display: none; }
+
+/* Mobile-Nav-Panel */
+.mobile-nav {
+  display: none;
+  flex-direction: column;
+  gap: .25rem;
+  padding: .5rem 0 1rem;
+  border-top: 1px solid var(--border);
+}
+.mobile-nav a {
+  padding: .7rem .9rem;
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-weight: 500;
+}
+.mobile-nav a:hover { background: var(--primary-soft); text-decoration: none; }
+.mobile-nav.open { display: flex; }
+
+/* ---------- Footer ---------- */
+footer.site {
+  margin-top: auto;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 2.5rem 0 2rem;
+}
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem 1.4rem;
+  margin-bottom: 1.25rem;
+}
+.footer-links a { color: var(--muted); font-weight: 500; }
+.footer-links a:hover { color: var(--primary); }
+.footer-note { color: var(--muted); font-size: .9rem; margin: 0; }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  font: inherit;
+  font-weight: 600;
+  padding: .8rem 1.4rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform .1s, box-shadow .15s, background .15s, border-color .15s;
+}
+.btn:hover { text-decoration: none; }
+.btn:active { transform: translateY(1px); }
+.btn-primary { background: var(--primary); color: #fff; box-shadow: var(--shadow); }
+.btn-primary:hover { background: #2f4dc4; }
+.btn-ghost { background: var(--surface); color: var(--text); border-color: var(--border); }
+.btn-ghost:hover { border-color: var(--primary); color: var(--primary); }
+.btn-warm { background: var(--warm); color: #3a2606; }
+.btn-warm:hover { filter: brightness(1.05); }
+
+/* ---------- Karten / Sektionen ---------- */
+.section { padding: 3.5rem 0; }
+.section-sm { padding: 2.25rem 0; }
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  font-size: .75rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: .6rem;
+}
+.lead { font-size: 1.1rem; color: var(--muted); max-width: 60ch; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+}
+
+.grid { display: grid; gap: 1.1rem; }
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+
+.page-head { padding: 2.5rem 0 1.5rem; }
+
+/* ---------- Cookie-Banner ---------- */
+.cookie-banner {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 200;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -4px 20px rgba(0,0,0,.1);
+  padding: 1rem 0;
+  transform: translateY(110%);
+  transition: transform .35s ease;
+}
+.cookie-banner.show { transform: translateY(0); }
+.cookie-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.cookie-text { color: var(--muted); font-size: .92rem; margin: 0; max-width: 60ch; }
+.cookie-text strong { color: var(--text); }
+.cookie-actions { display: flex; gap: .6rem; flex-wrap: wrap; }
+.cookie-actions .btn { padding: .6rem 1.1rem; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 820px) {
+  nav.main { display: none; }
+  .hamburger { display: inline-flex; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: .001ms !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
+}
+
+
+
+/* ===== Startseite ===== */
+.hero { padding: 4rem 0 2.5rem; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: .5rem;
+  background: var(--warm-soft); color: var(--warm);
+  border: 1px solid color-mix(in srgb, var(--warm) 30%, transparent);
+  padding: .35rem .8rem; border-radius: 999px;
+  font-size: .85rem; font-weight: 600; margin-bottom: 1.1rem;
+}
+.hero p.lead { margin-bottom: 1.6rem; }
+.hero-cta { display: flex; gap: .8rem; flex-wrap: wrap; }
+
+/* Rechner */
+.calc {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+.calc-tabs { display: flex; border-bottom: 1px solid var(--border); }
+.calc-tab {
+  flex: 1; font: inherit; font-weight: 600;
+  padding: 1rem .8rem; background: transparent; border: none;
+  color: var(--muted); cursor: pointer; border-bottom: 3px solid transparent;
+  transition: color .15s, border-color .15s, background .15s;
+}
+.calc-tab:hover { color: var(--text); background: var(--primary-soft); }
+.calc-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+.calc-body { padding: 1.75rem; }
+.calc-controls {
+  display: flex; align-items: flex-end; gap: 1rem; flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+.field { display: flex; flex-direction: column; gap: .35rem; }
+.field label { font-size: .85rem; font-weight: 600; color: var(--muted); }
+.field input[type="time"], .field select {
+  font: inherit; padding: .65rem .8rem;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--bg); color: var(--text); min-width: 160px;
+}
+.now-row { display: flex; align-items: center; gap: .6rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
+.calc-hint { color: var(--muted); font-size: .9rem; margin: 0 0 1.25rem; }
+
+.results { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: .9rem; }
+.result-tile {
+  border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 1.1rem; text-align: center; background: var(--surface);
+  position: relative; overflow: hidden;
+}
+.result-tile::before {
+  content: ""; position: absolute; inset: 0 auto 0 0; width: 4px;
+}
+.result-tile .time { font-size: 1.7rem; font-weight: 700; letter-spacing: -.02em; }
+.result-tile .meta { font-size: .85rem; color: var(--muted); }
+.result-tile .label {
+  display: inline-block; margin-top: .5rem; font-size: .75rem; font-weight: 700;
+  padding: .2rem .6rem; border-radius: 999px;
+}
+.q-optimal { background: rgba(34,197,94,.12); color: #16a34a; }
+.q-optimal.result-tile::before { background: #22c55e; }
+.q-ok      { background: rgba(245,158,11,.14); color: #d97706; }
+.q-ok.result-tile::before { background: var(--warm); }
+.q-short   { background: rgba(249,115,22,.14); color: #ea580c; }
+.q-short.result-tile::before { background: #fb923c; }
+.legend { display: flex; gap: 1.2rem; flex-wrap: wrap; margin-top: 1.25rem; font-size: .85rem; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: .4rem; }
+.legend .dot { width: 10px; height: 10px; border-radius: 50%; }
+
+/* Timer */
+.timer-card { display: grid; grid-template-columns: 1.1fr 1fr; gap: 2rem; }
+@media (max-width: 720px) { .timer-card { grid-template-columns: 1fr; } }
+.chip-row { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+.chip {
+  font: inherit; font-weight: 600; padding: .5rem .9rem;
+  border: 1px solid var(--border); border-radius: 999px;
+  background: var(--surface); color: var(--text); cursor: pointer;
+  transition: border-color .15s, background .15s, color .15s;
+}
+.chip:hover { border-color: var(--primary); }
+.chip.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+.sound-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem; margin-bottom: 1rem; }
+@media (max-width: 480px) { .sound-grid { grid-template-columns: repeat(2, 1fr); } }
+.sound-btn {
+  font: inherit; padding: .8rem .4rem; border: 1px solid var(--border);
+  border-radius: var(--radius-sm); background: var(--surface); color: var(--text);
+  cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: .3rem;
+  font-size: .82rem; transition: border-color .15s, background .15s;
+}
+.sound-btn .ico { font-size: 1.4rem; }
+.sound-btn:hover { border-color: var(--accent); }
+.sound-btn.active { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, var(--surface)); }
+.timer-display {
+  font-size: clamp(3rem, 12vw, 4.5rem); font-weight: 700; letter-spacing: -.03em;
+  text-align: center; font-variant-numeric: tabular-nums; margin: .25rem 0 1rem;
+}
+.timer-ring { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.timer-actions { display: flex; gap: .6rem; justify-content: center; flex-wrap: wrap; }
+.volume-toggle { display: flex; align-items: center; gap: .5rem; margin-top: 1rem; color: var(--muted); font-size: .9rem; justify-content: center; }
+.volume-toggle input { width: 18px; height: 18px; }
+
+/* Info-Karten */
+.info-card .ico { font-size: 1.8rem; }
+.info-card h3 { margin-top: .6rem; }
+.info-card p { color: var(--muted); margin: 0; font-size: .95rem; }
+.tip { display: flex; gap: .8rem; }
+.tip .ico { font-size: 1.5rem; flex-shrink: 0; }
+.tip h3 { font-size: 1.05rem; }
+.tip p { color: var(--muted); margin: 0; font-size: .92rem; }
+
+/* Zyklus-Erklärbox */
+.cycle-explainer {
+  margin-top: 1.5rem;
+  background: var(--primary-soft);
+  border: 1px solid color-mix(in srgb, var(--primary) 22%, transparent);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.4rem;
+}
+.cycle-explainer h3 { display: flex; align-items: center; gap: .5rem; font-size: 1.05rem; margin-bottom: .5rem; }
+.cycle-explainer p { color: var(--text); margin: 0 0 .6rem; font-size: .95rem; }
+.cycle-explainer p:last-child { margin-bottom: 0; }
+.cycle-explainer .inertia { color: var(--muted); }
+.cycle-explainer a { font-weight: 600; }
+
+/* Schichtdienst-Hinweis unter dem Rechner */
+.shift-prompt {
+  margin-top: 1.25rem;
+  display: flex; align-items: center; gap: 1.1rem; flex-wrap: wrap;
+  background: var(--warm-soft);
+  border: 1px solid color-mix(in srgb, var(--warm) 35%, transparent);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.4rem;
+}
+.shift-prompt .ico { font-size: 1.9rem; line-height: 1; }
+.shift-prompt .txt { flex: 1; min-width: 220px; }
+.shift-prompt h3 { margin: 0 0 .2rem; font-size: 1.05rem; }
+.shift-prompt p { margin: 0; color: var(--muted); font-size: .92rem; }
+
+/* CTA-Banner */
+.cta-banner {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  border-radius: var(--radius); padding: 2.5rem; color: #fff; text-align: center;
+}
+.cta-banner h2 { color: #fff; }
+.cta-banner p { color: rgba(255,255,255,.9); max-width: 50ch; margin-inline: auto; }
+.cta-banner .btn { background: #fff; color: var(--primary); margin-top: .5rem; }
+.cta-banner .btn:hover { background: #f1f5ff; }
+</style>
+</head>
+<body>
+  <header class="site">
+    <div class="container">
+      <div class="header-inner">
+        <a class="logo" href="index.html"><span class="moon">🌙</span> schlaf-rechner.de</a>
+        <nav class="main" aria-label="Hauptnavigation"><a href="index.html" class="active">Rechner</a><a href="schichtplan.html">Schichtplan</a><a href="wissen.html">Wissen</a><a href="faq.html">FAQ</a><a href="hilfe.html">Hilfe</a></nav>
+        <div class="header-actions">
+          <button class="icon-btn" id="themeBtn" type="button" aria-label="Hell-/Dunkelmodus umschalten">🌙</button>
+          <button class="icon-btn hamburger" id="hamburger" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobileNav">☰</button>
+        </div>
+      </div>
+      <nav class="mobile-nav" id="mobileNav" aria-label="Mobile Navigation"><a href="index.html">Rechner</a><a href="schichtplan.html">Schichtplan</a><a href="wissen.html">Wissen</a><a href="faq.html">FAQ</a><a href="hilfe.html">Hilfe</a></nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <span class="hero-badge">🌙 Berechnet nach 90-Minuten-Schlafzyklen</span>
+      <h1>Wach auf, wenn dein Körper bereit ist.</h1>
+      <p class="lead">Der Schlafrechner findet die Zeiten, zu denen du am Ende eines Schlafzyklus aufwachst – statt mitten im Tiefschlaf. So startest du ausgeruhter in den Tag. Alles läuft lokal in deinem Browser.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#rechner">Zeit berechnen</a>
+        <a class="btn btn-ghost" href="#timer">Einschlaf-Timer</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-sm" id="rechner">
+    <div class="container">
+      <div class="calc">
+        <div class="calc-tabs" role="tablist">
+          <button class="calc-tab active" id="tab-wake" role="tab" aria-selected="true" type="button">Wann soll ich aufstehen?</button>
+          <button class="calc-tab" id="tab-sleep" role="tab" aria-selected="false" type="button">Wann soll ich einschlafen?</button>
+        </div>
+        <div class="calc-body">
+          <!-- Modus 1 -->
+          <div id="mode-wake">
+            <div class="now-row">
+              <button class="btn btn-warm" id="sleepNowBtn" type="button">😴 Ich gehe jetzt schlafen</button>
+              <span class="calc-hint" style="margin:0">oder wähle eine Einschlafzeit:</span>
+            </div>
+            <div class="calc-controls">
+              <div class="field">
+                <label for="bedTime">Ich schlafe ein um</label>
+                <input type="time" id="bedTime">
+              </div>
+              <button class="btn btn-primary" id="calcWakeBtn" type="button">Aufwachzeiten zeigen</button>
+            </div>
+            <p class="calc-hint">Wir rechnen 14&nbsp;Minuten zum Einschlafen ein und zeigen die idealen Aufwachzeiten am Ende ganzer Schlafzyklen.</p>
+            <div class="results" id="wakeResults"></div>
+          </div>
+          <!-- Modus 2 -->
+          <div id="mode-sleep" hidden>
+            <div class="calc-controls">
+              <div class="field">
+                <label for="wakeTime">Ich muss aufstehen um</label>
+                <input type="time" id="wakeTime">
+              </div>
+              <button class="btn btn-primary" id="calcSleepBtn" type="button">Einschlafzeiten zeigen</button>
+            </div>
+            <p class="calc-hint">Wir rechnen rückwärts und zeigen, wann du spätestens einschlafen solltest, um am Ende eines Zyklus geweckt zu werden.</p>
+            <div class="results" id="sleepResults"></div>
+          </div>
+
+          <div class="legend">
+            <span><span class="dot" style="background:#22c55e"></span> Optimal (5–6 Zyklen)</span>
+            <span><span class="dot" style="background:#f59e0b"></span> Okay (4 Zyklen)</span>
+            <span><span class="dot" style="background:#fb923c"></span> Kurz (3 Zyklen)</span>
+          </div>
+
+          <div class="cycle-explainer">
+            <h3>🔁 Was sind Schlafzyklen – und warum zählen sie?</h3>
+            <p>Dein Schlaf verläuft nicht gleichmäßig, sondern in Zyklen von durchschnittlich rund 90&nbsp;Minuten (etwa 4–6 pro Nacht). Jeder Zyklus führt vom leichten Schlaf in den Tiefschlaf und weiter in die Traumphase (REM) – und wieder zurück Richtung Wachzustand. Am Ende eines Zyklus ist dein Schlaf am leichtesten.</p>
+            <p class="inertia">Wachst du genau dann auf, fällt das Aufstehen leicht und du fühlst dich frischer. Wirst du dagegen mitten im Tiefschlaf geweckt, ist das Aufwachen oft zäh – du bist trotz ausreichender Stunden wie gerädert (sogenannte <strong>Schlafträgheit</strong>, die 30&nbsp;Minuten bis zu einer Stunde anhalten kann). Genau deshalb zeigt dir der Rechner Zeiten, die auf ein Zyklus-Ende fallen – plus rund 14&nbsp;Minuten, die das Einschlafen im Schnitt dauert.</p>
+            <p style="margin-top:.7rem"><a href="wissen-schichtarbeit.html">→ Mehr dazu mit Quellen: Schlafzyklen in der Schichtarbeit</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="shift-prompt">
+        <span class="ico">🔄</span>
+        <div class="txt">
+          <h3>Arbeitest du im Schichtdienst? Macht für dich ein Schlafplan Sinn?</h3>
+          <p>Wechselnde Früh-, Spät- und Nachtschichten bringen deine innere Uhr durcheinander. Mit dem Schichtplaner erstellst du dir einen persönlichen Schlafplan für 1–2 Wochen – zum Ausdrucken oder als PDF.</p>
+        </div>
+        <a class="btn btn-warm" href="schichtplan.html">Schlafplan erstellen</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="timer">
+    <div class="container">
+      <p class="eyebrow">Sanft einschlafen</p>
+      <h2>Einschlaf-Timer mit Entspannungsgeräuschen</h2>
+      <p class="lead" style="margin-bottom:1.75rem">Wähle eine Laufzeit und ein Geräusch. Der Ton wird synthetisch in deinem Browser erzeugt und am Ende sanft ausgeblendet.</p>
+      <div class="card timer-card">
+        <div>
+          <h3>Laufzeit</h3>
+          <div class="chip-row" id="durationChips">
+            <button class="chip" data-min="15" type="button">15 Min</button>
+            <button class="chip active" data-min="30" type="button">30 Min</button>
+            <button class="chip" data-min="45" type="button">45 Min</button>
+            <button class="chip" data-min="60" type="button">60 Min</button>
+            <button class="chip" data-min="90" type="button">90 Min</button>
+          </div>
+          <h3>Geräusch</h3>
+          <div class="sound-grid" id="soundGrid">
+            <button class="sound-btn active" data-sound="none" type="button"><span class="ico">🔇</span>Kein Ton</button>
+            <button class="sound-btn" data-sound="ocean" type="button"><span class="ico">🌊</span>Meer</button>
+            <button class="sound-btn" data-sound="rain" type="button"><span class="ico">🌧</span>Regen</button>
+            <button class="sound-btn" data-sound="forest" type="button"><span class="ico">🌲</span>Wald</button>
+            <button class="sound-btn" data-sound="cafe" type="button"><span class="ico">☕</span>Café</button>
+            <button class="sound-btn" data-sound="white" type="button"><span class="ico">〰</span>White&nbsp;Noise</button>
+          </div>
+          <label class="volume-toggle">
+            <input type="checkbox" id="fadeToggle" checked>
+            Lautstärke am Ende sanft ausblenden
+          </label>
+        </div>
+        <div class="timer-ring">
+          <div class="timer-display" id="timerDisplay">30:00</div>
+          <div class="timer-actions">
+            <button class="btn btn-primary" id="timerStart" type="button">Starten</button>
+            <button class="btn btn-ghost" id="timerReset" type="button">Zurücksetzen</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-sm">
+    <div class="container">
+      <p class="eyebrow">Grundlagen</p>
+      <h2>Wie funktioniert Schlaf?</h2>
+      <div class="grid grid-3" style="margin-top:1.5rem">
+        <div class="card info-card">
+          <div class="ico">🔁</div>
+          <h3>Schlafzyklen</h3>
+          <p>Ein Zyklus dauert rund 90&nbsp;Minuten und durchläuft Leicht-, Tief- und REM-Schlaf. In einer Nacht wiederholt er sich vier- bis sechsmal.</p>
+        </div>
+        <div class="card info-card">
+          <div class="ico">🌀</div>
+          <h3>REM-Schlaf</h3>
+          <p>Die Traumphase verarbeitet Erlebtes und festigt das Gedächtnis. Gegen Morgen werden die REM-Phasen länger.</p>
+        </div>
+        <div class="card info-card">
+          <div class="ico">🛌</div>
+          <h3>Tiefschlaf</h3>
+          <p>Im Tiefschlaf erholt sich der Körper am stärksten. Wer hier geweckt wird, fühlt sich oft wie gerädert – genau das vermeidet der Rechner.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-sm">
+    <div class="container">
+      <p class="eyebrow">Besser schlafen</p>
+      <h2>6 Tipps für erholsamen Schlaf</h2>
+      <div class="grid grid-3" style="margin-top:1.5rem">
+        <div class="card tip"><span class="ico">🌑</span><div><h3>Dunkelheit</h3><p>Verdunkle den Raum. Schon wenig Licht stört die Melatonin-Bildung.</p></div></div>
+        <div class="card tip"><span class="ico">❄️</span><div><h3>Kühle Temperatur</h3><p>Rund 18&nbsp;°C gelten als ideal zum Ein- und Durchschlafen.</p></div></div>
+        <div class="card tip"><span class="ico">⏰</span><div><h3>Feste Zeiten</h3><p>Gleiche Schlaf- und Aufstehzeiten stabilisieren deinen Rhythmus.</p></div></div>
+        <div class="card tip"><span class="ico">📵</span><div><h3>Bildschirme aus</h3><p>Blaulicht am Abend verschiebt die innere Uhr nach hinten.</p></div></div>
+        <div class="card tip"><span class="ico">☕</span><div><h3>Koffein begrenzen</h3><p>Nach dem frühen Nachmittag besser auf Kaffee und Cola verzichten.</p></div></div>
+        <div class="card tip"><span class="ico">🧘</span><div><h3>Abendroutine</h3><p>Ein ruhiges Ritual signalisiert dem Körper: Es ist Zeit zu schlafen.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="cta-banner">
+        <h2>Mehr über deinen Schlaf erfahren</h2>
+        <p>In der Wissensdatenbank findest du verständliche Artikel zu Schlafzyklen, REM, Schlafstörungen und Optimierung.</p>
+        <a class="btn" href="wissen.html">Zur Wissensdatenbank</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site">
+    <div class="container">
+      <div class="footer-links"><a href="index.html">Rechner</a><a href="schichtplan.html">Schichtplan</a><a href="wissen.html">Wissenswertes</a><a href="faq.html">FAQ</a><a href="hilfe.html">Hilfe</a><a href="kontakt.html">Kontakt</a><a href="ueber-uns.html">Über uns</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></div>
+      <p class="footer-note">© 2025 schlaf-rechner.de · Keine medizinische Beratung · Keine Garantie auf Richtigkeit</p>
+    </div>
+  </footer>
+
+  <div class="cookie-banner" id="cookieBanner" role="dialog" aria-label="Cookie-Hinweis">
+    <div class="container">
+      <div class="cookie-inner">
+        <p class="cookie-text"><strong>Diese Seite arbeitet datensparsam.</strong> Notwendige Speicherung (z.&nbsp;B. dein Theme) bleibt lokal auf deinem Gerät. Details in der <a href="datenschutz.html">Datenschutzerklärung</a>.</p>
+        <div class="cookie-actions">
+          <button class="btn btn-ghost" id="cookieEssential" type="button">Nur notwendige</button>
+          <button class="btn btn-primary" id="cookieAccept" type="button">Alle akzeptieren</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      // --- Theme-Toggle ---
+      var themeBtn = document.getElementById('themeBtn');
+      function applyTheme(t) {
+        document.documentElement.setAttribute('data-theme', t);
+        document.body.setAttribute('data-theme', t);
+        if (themeBtn) themeBtn.textContent = (t === 'dark') ? '☀️' : '🌙';
+      }
+      applyTheme(localStorage.getItem('schlaf_theme') || 'light');
+      if (themeBtn) {
+        themeBtn.addEventListener('click', function () {
+          var next = (document.body.getAttribute('data-theme') === 'dark') ? 'light' : 'dark';
+          localStorage.setItem('schlaf_theme', next);
+          applyTheme(next);
+        });
+      }
+
+      // --- Mobile-Navigation ---
+      var burger = document.getElementById('hamburger');
+      var mnav = document.getElementById('mobileNav');
+      if (burger && mnav) {
+        burger.addEventListener('click', function () {
+          var open = mnav.classList.toggle('open');
+          burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+          burger.textContent = open ? '✕' : '☰';
+        });
+      }
+
+      // --- Cookie-Banner ---
+      var banner = document.getElementById('cookieBanner');
+      if (banner && !localStorage.getItem('cookie-consent')) {
+        setTimeout(function () { banner.classList.add('show'); }, 600);
+      }
+      function consent(value) {
+        localStorage.setItem('cookie-consent', value);
+        if (banner) banner.classList.remove('show');
+      }
+      var acc = document.getElementById('cookieAccept');
+      var ess = document.getElementById('cookieEssential');
+      if (acc) acc.addEventListener('click', function () { consent('all'); });
+      if (ess) ess.addEventListener('click', function () { consent('essential'); });
+    })();
+  </script>
+  <script>
+  (function () {
+    var CYCLE = 90;      // Minuten pro Schlafzyklus
+    var FALL_ASLEEP = 14; // Minuten Einschlafzeit
+
+    function pad(n) { return (n < 10 ? '0' : '') + n; }
+    function fmt(d) { return pad(d.getHours()) + ':' + pad(d.getMinutes()); }
+
+    function quality(cycles) {
+      if (cycles >= 5) return { cls: 'q-optimal', label: 'Optimal' };
+      if (cycles === 4) return { cls: 'q-ok', label: 'Okay' };
+      return { cls: 'q-short', label: 'Kurz' };
+    }
+
+    function durLabel(cycles) {
+      var h = (cycles * CYCLE) / 60;
+      return (Number.isInteger(h) ? h : h.toFixed(1).replace('.', ',')) + ' Std.';
+    }
+
+    function tile(timeStr, cycles, sub) {
+      var q = quality(cycles);
+      return '<div class="result-tile ' + q.cls + '">' +
+        '<div class="time">' + timeStr + '</div>' +
+        '<div class="meta">' + cycles + ' Zyklen · ' + durLabel(cycles) + '</div>' +
+        '<span class="label">' + q.label + '</span>' +
+        (sub ? '<div class="meta" style="margin-top:.4rem">' + sub + '</div>' : '') +
+        '</div>';
+    }
+
+    function parseTime(value) {
+      if (!value) return null;
+      var parts = value.split(':');
+      var d = new Date();
+      d.setHours(parseInt(parts[0], 10), parseInt(parts[1], 10), 0, 0);
+      return d;
+    }
+
+    // ---- Modus 1: Aufwachzeiten ----
+    function calcWake(bedDate) {
+      var html = '';
+      [6, 5, 4, 3].forEach(function (c) {
+        var w = new Date(bedDate.getTime() + (FALL_ASLEEP + c * CYCLE) * 60000);
+        html += tile(fmt(w), c, '');
+      });
+      document.getElementById('wakeResults').innerHTML = html;
+    }
+
+    // ---- Modus 2: Einschlafzeiten ----
+    function calcSleep(wakeDate) {
+      var html = '';
+      [6, 5, 4, 3].forEach(function (c) {
+        var b = new Date(wakeDate.getTime() - (FALL_ASLEEP + c * CYCLE) * 60000);
+        html += tile(fmt(b), c, '');
+      });
+      document.getElementById('sleepResults').innerHTML = html;
+    }
+
+    // Tabs
+    var tabWake = document.getElementById('tab-wake');
+    var tabSleep = document.getElementById('tab-sleep');
+    var modeWake = document.getElementById('mode-wake');
+    var modeSleep = document.getElementById('mode-sleep');
+    function switchTab(toSleep) {
+      tabSleep.classList.toggle('active', toSleep);
+      tabWake.classList.toggle('active', !toSleep);
+      tabSleep.setAttribute('aria-selected', toSleep);
+      tabWake.setAttribute('aria-selected', !toSleep);
+      modeSleep.hidden = !toSleep;
+      modeWake.hidden = toSleep;
+    }
+    tabWake.addEventListener('click', function () { switchTab(false); });
+    tabSleep.addEventListener('click', function () { switchTab(true); });
+
+    // Buttons Modus 1
+    document.getElementById('sleepNowBtn').addEventListener('click', function () {
+      calcWake(new Date());
+    });
+    document.getElementById('calcWakeBtn').addEventListener('click', function () {
+      var t = parseTime(document.getElementById('bedTime').value);
+      calcWake(t || new Date());
+    });
+    // Buttons Modus 2
+    document.getElementById('calcSleepBtn').addEventListener('click', function () {
+      var t = parseTime(document.getElementById('wakeTime').value);
+      if (!t) { t = new Date(); t.setHours(7, 0, 0, 0); }
+      calcSleep(t);
+    });
+
+    // Voreinstellung: Aufwachzeiten ab "jetzt" anzeigen
+    calcWake(new Date());
+
+    // =====================================================================
+    //  Einschlaf-Timer + Web Audio
+    // =====================================================================
+    var audioCtx = null;
+    var current = null;       // aktive Geräusch-Nodes
+    var selectedSound = 'none';
+    var durationMin = 30;
+    var remaining = durationMin * 60;
+    var ticker = null;
+    var running = false;
+
+    var display = document.getElementById('timerDisplay');
+    function renderTime() {
+      var m = Math.floor(remaining / 60), s = remaining % 60;
+      display.textContent = pad(m) + ':' + pad(s);
+    }
+    renderTime();
+
+    // Dauer-Chips
+    document.querySelectorAll('#durationChips .chip').forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        document.querySelectorAll('#durationChips .chip').forEach(function (c) { c.classList.remove('active'); });
+        chip.classList.add('active');
+        durationMin = parseInt(chip.dataset.min, 10);
+        if (!running) { remaining = durationMin * 60; renderTime(); }
+      });
+    });
+
+    // Sound-Auswahl
+    document.querySelectorAll('#soundGrid .sound-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('#soundGrid .sound-btn').forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        selectedSound = btn.dataset.sound;
+        if (running) { stopSound(false); startSound(); }
+      });
+    });
+
+    function ensureCtx() {
+      if (!audioCtx) {
+        var AC = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AC();
+      }
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      return audioCtx;
+    }
+
+    // Längere Puffer (mehrere Sekunden) verhindern hörbares Looping.
+    function noiseBuffer(ctx, type, seconds) {
+      var len = Math.floor(ctx.sampleRate * (seconds || 6));
+      var buffer = ctx.createBuffer(1, len, ctx.sampleRate);
+      var data = buffer.getChannelData(0);
+      var i, w;
+      if (type === 'brown') {
+        var last = 0;
+        for (i = 0; i < len; i++) {
+          w = Math.random() * 2 - 1;
+          last = (last + 0.02 * w) / 1.02;
+          data[i] = last * 3.5;
+        }
+      } else if (type === 'pink') {
+        // Paul-Kellet-Filter: wärmeres, natürlicheres Rauschen als weißes
+        var b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+        for (i = 0; i < len; i++) {
+          w = Math.random() * 2 - 1;
+          b0 = 0.99886 * b0 + w * 0.0555179;
+          b1 = 0.99332 * b1 + w * 0.0750759;
+          b2 = 0.96900 * b2 + w * 0.1538520;
+          b3 = 0.86650 * b3 + w * 0.3104856;
+          b4 = 0.55000 * b4 + w * 0.5329522;
+          b5 = -0.7616 * b5 - w * 0.0168980;
+          data[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + w * 0.5362) * 0.11;
+          b6 = w * 0.115926;
+        }
+      } else {
+        for (i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
+      }
+      return buffer;
+    }
+
+    function lfo(ctx, freq, depth, target) {
+      var osc = ctx.createOscillator();
+      osc.type = 'sine'; osc.frequency.value = freq;
+      var g = ctx.createGain(); g.gain.value = depth;
+      osc.connect(g); g.connect(target);
+      return osc;
+    }
+
+    // Jeder Generator endet in einem Master-Gain (Start 0), das nur die
+    // Ein-/Ausblendung steuert. Alle Modulationen laufen auf internen Knoten,
+    // damit sie nicht mit der Hüllkurve kollidieren.
+    // --- Meeresrauschen: Pink Noise, langsam an- und abschwellende Wellen ---
+    function createOcean(ctx) {
+      var src = ctx.createBufferSource();
+      src.buffer = noiseBuffer(ctx, 'pink', 7); src.loop = true;
+      var lp = ctx.createBiquadFilter(); lp.type = 'lowpass';
+      lp.frequency.value = 500; lp.Q.value = 0.7;
+      var amp = ctx.createGain(); amp.gain.value = 0.5;     // Wellen-Hüllkurve
+      var l1 = lfo(ctx, 0.09, 0.20, amp.gain);              // Welle 1
+      var l2 = lfo(ctx, 0.057, 0.12, amp.gain);             // Welle 2 (versetzt)
+      var l3 = lfo(ctx, 0.07, 230, lp.frequency);           // „Whoosh“ über Filter
+      var master = ctx.createGain(); master.gain.value = 0;
+      src.connect(lp); lp.connect(amp); amp.connect(master);
+      return { gain: master, base: 0.6, outputs: [src, l1, l2, l3] };
+    }
+    // --- Regen: gleichmäßiges Bandpass-Rauschen + dezentes Hochton-Prasseln ---
+    function createRain(ctx) {
+      var src1 = ctx.createBufferSource();
+      src1.buffer = noiseBuffer(ctx, 'pink', 6); src1.loop = true;
+      var bp = ctx.createBiquadFilter(); bp.type = 'bandpass';
+      bp.frequency.value = 1900; bp.Q.value = 0.6;
+      var g1 = ctx.createGain(); g1.gain.value = 0.55;
+      var lv = lfo(ctx, 0.13, 0.06, g1.gain);               // sanftes Schwanken
+      var src2 = ctx.createBufferSource();
+      src2.buffer = noiseBuffer(ctx, 'white', 5); src2.loop = true;
+      var hp = ctx.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 5500;
+      var g2 = ctx.createGain(); g2.gain.value = 0.07;       // feines Prasseln
+      var ls = lfo(ctx, 0.5, 0.02, g2.gain);
+      var master = ctx.createGain(); master.gain.value = 0;
+      src1.connect(bp); bp.connect(g1); g1.connect(master);
+      src2.connect(hp); hp.connect(g2); g2.connect(master);
+      return { gain: master, base: 0.5, outputs: [src1, src2, lv, ls] };
+    }
+    // --- Wald: Wind durch Blätter (wandernder Bandpass) + tiefe Grundlage ---
+    function createForest(ctx) {
+      var src = ctx.createBufferSource();
+      src.buffer = noiseBuffer(ctx, 'pink', 7); src.loop = true;
+      var bp = ctx.createBiquadFilter(); bp.type = 'bandpass';
+      bp.frequency.value = 900; bp.Q.value = 0.5;
+      var amp = ctx.createGain(); amp.gain.value = 0.5;
+      var lc1 = lfo(ctx, 0.05, 430, bp.frequency);          // langsame Böen
+      var lc2 = lfo(ctx, 0.087, 190, bp.frequency);
+      var la = lfo(ctx, 0.07, 0.17, amp.gain);              // Atmen des Windes
+      var src2 = ctx.createBufferSource();
+      src2.buffer = noiseBuffer(ctx, 'brown', 5); src2.loop = true;
+      var lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 300;
+      var amp2 = ctx.createGain(); amp2.gain.value = 0.13;
+      var master = ctx.createGain(); master.gain.value = 0;
+      src.connect(bp); bp.connect(amp); amp.connect(master);
+      src2.connect(lp); lp.connect(amp2); amp2.connect(master);
+      return { gain: master, base: 0.5, outputs: [src, src2, lc1, lc2, la] };
+    }
+    // --- Café: warmes Brown Noise mit leichtem Murmeln ---
+    function createCafe(ctx) {
+      var src = ctx.createBufferSource();
+      src.buffer = noiseBuffer(ctx, 'brown', 6); src.loop = true;
+      var lp = ctx.createBiquadFilter(); lp.type = 'lowpass';
+      lp.frequency.value = 700; lp.Q.value = 0.4;
+      var amp = ctx.createGain(); amp.gain.value = 0.6;
+      var la = lfo(ctx, 0.08, 0.05, amp.gain);
+      var master = ctx.createGain(); master.gain.value = 0;
+      src.connect(lp); lp.connect(amp); amp.connect(master);
+      return { gain: master, base: 0.55, outputs: [src, la] };
+    }
+    // --- White Noise: leicht entschärft (sanfter Tiefpass) ---
+    function createWhite(ctx) {
+      var src = ctx.createBufferSource();
+      src.buffer = noiseBuffer(ctx, 'white', 5); src.loop = true;
+      var lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 9000;
+      var master = ctx.createGain(); master.gain.value = 0;
+      src.connect(lp); lp.connect(master);
+      return { gain: master, base: 0.18, outputs: [src] };
+    }
+
+    var GENERATORS = {
+      ocean: createOcean, rain: createRain, forest: createForest,
+      cafe: createCafe, white: createWhite
+    };
+
+    function startSound() {
+      if (selectedSound === 'none') return;
+      var ctx = ensureCtx();
+      var gen = GENERATORS[selectedSound];
+      if (!gen) return;
+      var node = gen(ctx);
+      node.gain.connect(ctx.destination);
+      node.outputs.forEach(function (o) { if (o.start) o.start(); });
+      node.gain.gain.linearRampToValueAtTime(node.base, ctx.currentTime + 1.2);
+      current = node;
+    }
+
+    function stopSound(fade) {
+      if (!current) return;
+      var ctx = audioCtx;
+      var node = current;
+      var useFade = fade && document.getElementById('fadeToggle').checked;
+      var stopIn = useFade ? 2 : 0.05;
+      try {
+        node.gain.gain.cancelScheduledValues(ctx.currentTime);
+        node.gain.gain.setValueAtTime(node.gain.gain.value, ctx.currentTime);
+        node.gain.gain.linearRampToValueAtTime(0, ctx.currentTime + stopIn);
+      } catch (e) {}
+      setTimeout(function () {
+        node.outputs.forEach(function (o) { try { o.stop(); } catch (e) {} });
+      }, stopIn * 1000 + 50);
+      current = null;
+    }
+
+    function tick() {
+      remaining--;
+      renderTime();
+      if (remaining <= 0) { finish(); }
+    }
+
+    function finish() {
+      clearInterval(ticker); ticker = null;
+      running = false;
+      stopSound(true);
+      document.getElementById('timerStart').textContent = 'Starten';
+      remaining = durationMin * 60;
+      setTimeout(renderTime, 2200);
+    }
+
+    var startBtn = document.getElementById('timerStart');
+    startBtn.addEventListener('click', function () {
+      if (running) {
+        // Pause
+        clearInterval(ticker); ticker = null; running = false;
+        stopSound(false); startBtn.textContent = 'Weiter';
+      } else {
+        if (remaining <= 0) remaining = durationMin * 60;
+        running = true; startBtn.textContent = 'Pause';
+        startSound();
+        ticker = setInterval(tick, 1000);
+      }
+    });
+
+    document.getElementById('timerReset').addEventListener('click', function () {
+      clearInterval(ticker); ticker = null; running = false;
+      stopSound(false);
+      remaining = durationMin * 60; renderTime();
+      startBtn.textContent = 'Starten';
+    });
+  })();
+  </script>
+</body>
+</html>

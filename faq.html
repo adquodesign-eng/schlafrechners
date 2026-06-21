@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Häufige Fragen (FAQ) | schlaf-rechner.de</title>
+  <meta name="description" content="Antworten rund um den Schlafrechner, Schlaf allgemein, Technik und Datenschutz – übersichtlich nach Themen sortiert.">
+  <script>
+    (function () {
+      var t = localStorage.getItem('schlaf_theme') || 'light';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+  <style>
+:root {
+  --bg:        #F0F4F8;
+  --surface:   #FFFFFF;
+  --text:      #1A202C;
+  --muted:     #718096;
+  --primary:   #3B5BDB;
+  --primary-soft: #EEF2FF;
+  --accent:    #0EA5E9;
+  --warm:      #F59E0B;
+  --warm-soft: #FFFBEB;
+  --border:    #E2E8F0;
+  --shadow:    0 1px 3px rgba(0,0,0,0.07);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+  --radius:    12px;
+  --radius-sm: 8px;
+  --grid-line: rgba(59,91,219,0.04);
+}
+
+body[data-theme="dark"] {
+  --bg:          #0F172A;
+  --surface:     #1E293B;
+  --text:        #F1F5F9;
+  --muted:       #94A3B8;
+  --border:      #334155;
+  --primary-soft: rgba(59,91,219,0.15);
+  --warm-soft:   rgba(245,158,11,0.12);
+  --grid-line:   rgba(148,163,184,0.05);
+  --shadow:      0 1px 3px rgba(0,0,0,0.4);
+  --shadow-md:   0 4px 16px rgba(0,0,0,0.45);
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--text);
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 40px 40px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  transition: background-color .25s ease, color .25s ease;
+}
+
+a { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+img { max-width: 100%; }
+
+h1, h2, h3, h4 { line-height: 1.25; color: var(--text); }
+h1 { font-size: clamp(1.9rem, 4.5vw, 3rem); letter-spacing: -.02em; margin: 0 0 .5rem; }
+h2 { font-size: clamp(1.5rem, 3vw, 2rem); letter-spacing: -.015em; margin: 0 0 .75rem; }
+h3 { font-size: 1.2rem; margin: 0 0 .5rem; }
+p  { margin: 0 0 1rem; }
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.container { width: min(1120px, 92vw); margin-inline: auto; }
+
+/* ---------- Header ---------- */
+header.site {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: 64px;
+}
+.logo {
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  white-space: nowrap;
+}
+.logo:hover { text-decoration: none; }
+.logo .moon { font-size: 1.35rem; }
+
+nav.main { display: flex; align-items: center; gap: .35rem; }
+nav.main a {
+  color: var(--muted);
+  font-weight: 500;
+  padding: .5rem .8rem;
+  border-radius: var(--radius-sm);
+  transition: background .15s, color .15s;
+}
+nav.main a:hover { color: var(--text); background: var(--primary-soft); text-decoration: none; }
+nav.main a.active { color: var(--primary); background: var(--primary-soft); }
+
+.header-actions { display: flex; align-items: center; gap: .5rem; }
+
+.icon-btn {
+  width: 40px; height: 40px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 1.15rem;
+  color: var(--text);
+  transition: border-color .15s, transform .1s;
+}
+.icon-btn:hover { border-color: var(--primary); }
+.icon-btn:active { transform: scale(.94); }
+
+.hamburger { display: none; }
+
+/* Mobile-Nav-Panel */
+.mobile-nav {
+  display: none;
+  flex-direction: column;
+  gap: .25rem;
+  padding: .5rem 0 1rem;
+  border-top: 1px solid var(--border);
+}
+.mobile-nav a {
+  padding: .7rem .9rem;
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-weight: 500;
+}
+.mobile-nav a:hover { background: var(--primary-soft); text-decoration: none; }
+.mobile-nav.open { display: flex; }
+
+/* ---------- Footer ---------- */
+footer.site {
+  margin-top: auto;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 2.5rem 0 2rem;
+}
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem 1.4rem;
+  margin-bottom: 1.25rem;
+}
+.footer-links a { color: var(--muted); font-weight: 500; }
+.footer-links a:hover { color: var(--primary); }
+.footer-note { color: var(--muted); font-size: .9rem; margin: 0; }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  font: inherit;
+  font-weight: 600;
+  padding: .8rem 1.4rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform .1s, box-shadow .15s, background .15s, border-color .15s;
+}
+.btn:hover { text-decoration: none; }
+.btn:active { transform: translateY(1px); }
+.btn-primary { background: var(--primary); color: #fff; box-shadow: var(--shadow); }
+.btn-primary:hover { background: #2f4dc4; }
+.btn-ghost { background: var(--surface); color: var(--text); border-color: var(--border); }
+.btn-ghost:hover { border-color: var(--primary); color: var(--primary); }
+.btn-warm { background: var(--warm); color: #3a2606; }
+.btn-warm:hover { filter: brightness(1.05); }
+
+/* ---------- Karten / Sektionen ---------- */
+.section { padding: 3.5rem 0; }
+.section-sm { padding: 2.25rem 0; }
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  font-size: .75rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: .6rem;
+}
+.lead { font-size: 1.1rem; color: var(--muted); max-width: 60ch; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+}
+
+.grid { display: grid; gap: 1.1rem; }
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+
+.page-head { padding: 2.5rem 0 1.5rem; }
+
+/* ---------- Cookie-Banner ---------- */
+.cookie-banner {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 200;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -4px 20px rgba(0,0,0,.1);
+  padding: 1rem 0;
+  transform: translateY(110%);
+  transition: transform .35s ease;
+}
+.cookie-banner.show { transform: translateY(0); }
+.cookie-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.cookie-text { color: var(--muted); font-size: .92rem; margin: 0; max-width: 60ch; }
+.cookie-text strong { color: var(--text); }
+.cookie-actions { display: flex; gap: .6rem; flex-wrap: wrap; }
+.cookie-actions .btn { padding: .6rem 1.1rem; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 820px) {
+  nav.main { display: none; }
+  .hamburger { display: inline-flex; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: .001ms !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
+}
+
+
+
+.faq-group { margin-bottom: 2.25rem; }
+.faq-group h2 { display: flex; align-items: center; gap: .6rem; }
+.faq-item { border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); margin-bottom: .7rem; overflow: hidden; }
+.faq-q {
+  width: 100%; text-align: left; font: inherit; font-weight: 600; font-size: 1.02rem;
+  padding: 1.1rem 1.25rem; background: transparent; border: none; color: var(--text);
+  cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+}
+.faq-q:hover { color: var(--primary); }
+.faq-q .plus { font-size: 1.3rem; color: var(--primary); flex-shrink: 0; transition: transform .2s; line-height: 1; }
+.faq-item.open .faq-q .plus { transform: rotate(45deg); }
+.faq-a { max-height: 0; overflow: hidden; transition: max-height .25s ease; }
+.faq-a > div { padding: 0 1.25rem 1.2rem; color: var(--muted); }
+.faq-item.open .faq-a { max-height: 600px; }
+</style>
+</head>
+<body>
+  <header class="site">
+    <div class="container">
+      <div class="header-inner">
+        <a class="logo" href="index.html"><span class="moon">🌙</span> schlaf-rechner.de</a>
+        <nav class="main" aria-label="Hauptnavigation"><a href="index.html">Rechner</a><a href="schichtplan.html">Schichtplan</a><a href="wissen.html">Wissen</a><a href="faq.html" class="active">FAQ</a><a href="hilfe.html">Hilfe</a></nav>
+        <div class="header-actions">
+          <button class="icon-btn" id="themeBtn" type="button" aria-label="Hell-/Dunkelmodus umschalten">🌙</button>
+          <button class="icon-btn hamburger" id="hamburger" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobileNav">☰</button>
+        </div>
+      </div>
+      <nav class="mobile-nav" id="mobileNav" aria-label="Mobile Navigation"><a href="index.html">Rechner</a><a href="schichtplan.html">Schichtplan</a><a href="wissen.html">Wissen</a><a href="faq.html">FAQ</a><a href="hilfe.html">Hilfe</a></nav>
+    </div>
+  </header>
+
+  <section class="page-head">
+    <div class="container">
+      <p class="eyebrow">Häufige Fragen</p>
+      <h1>Antworten rund um Schlaf &amp; Rechner</h1>
+      <p class="lead">Hier findest du Antworten zum Schlafrechner, zu Schlaf allgemein, zu Technik und zum Datenschutz. Tippe eine Frage an, um die Antwort zu öffnen.</p>
+    </div>
+  </section>
+
+  <section class="section-sm" style="padding-top:.5rem">
+    <div class="container">
+      <div class="faq-group">
+        <h2>🧮 Schlafrechner</h2>
+        <div class="faq-item">
+          <button class="faq-q" type="button" aria-expanded="false"><span>Wie funktioniert der Schlafrechner?</span><span class="plus" aria-hidden="true">+</span></button>
+          <div class="faq-a"><div>Der Rechner nimmt deine Einschlaf- oder gewünschte Aufwachzeit und berechnet die Zeitpunkte, zu denen ganze 90-Minuten-Schlafzyklen enden. Wirst du an einem Zyklusende geweckt, fühlst du dich meist ausgeruhter, als wenn du mitten im Tiefschlaf gerissen wirst.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" type="button" aria-expanded="false"><span>Warum genau 90 Minuten pro Schlafzyklus?</span><span class="plus" aria-hidden="true">+</span></button>
+          <div class="faq-a"><div>90 Minuten gelten als guter Durchschnittswert für einen kompletten Zyklus aus Leicht-, Tief- und REM-Schlaf. Die tatsächliche Länge schwankt je nach Person und Nacht zwischen etwa 70 und 110 Minuten – der Rechner arbeitet daher mit dem bewährten Mittelwert.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" type="button" aria-expanded="false"><span>Warum wird eine Einschlafzeit von 14 Minuten angenommen?</span><span class="plus" aria-hidden="true">+</span></button>
+          <div class="faq-a"><div>Studien zeigen, dass gesunde Erwachsene im Schnitt rund 10 bis 20 Minuten zum Einschlafen brauchen. 14 Minuten sind ein realistischer Mittelwert, der in die Berechnung einfließt, damit die Zyklen ab dem tatsächlichen Schlafbeginn gezählt werden.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" type="button" aria-expanded="false"><span>Kann ich den Rechner auch für Nickerchen nutzen?</span><span class="plus" aria-hidden="true">+</span></button>
+          <div class="faq-a"><div>Für kurze Power-Naps von 10 bis 20 Minuten ist der Zyklus-Ansatz weniger relevant – hier willst du den Tiefschlaf bewusst vermeiden. Für ein längeres Nickerchen kannst du einen vollen Zyklus (rund 90 Minuten plus Einschlafzeit) einplanen, um nicht im Tiefschlaf geweckt zu werden.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" type="button" aria-expanded="false"><span>Stimmt die berechnete Zeit für jeden Menschen?</span><span class="plus" aria-hidden="true">+</span></button>
+          <div class="faq-a"><div>Nein, die Werte sind Richtwerte. Zyklus-Länge und Einschlafdauer sind individuell und ändern sich mit Alter, Tagesform und Schlafqualität. Sieh die Vorschläge als hilfreiche Orientierung, nicht als exakte Vorgabe.</div></div>
+        </div>
+      </div>
+      <div class="faq-group">
+        <h2>🌙 Schlaf allgemein</h2>
+        <div class="faq-item">
+          <button class="faq-q" type="button" aria-expanded="false"><span>Wie viele Stunden sollte ich schlafen?</span><span class="plus" aria-hidden="true">+</span></button>
+          <div class="faq-a"><div>Die meisten Erwachsenen brauchen 7 bis 9 Stunden. Jüngere Menschen und Kinder benötigen mehr. Entscheidend ist, wie erholt du dich tagsüber fühlst – nicht nur die reine Stundenzahl.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" type="button" aria-expanded="false"><span>Was ist der Unterschied zwischen REM- und Tiefschlaf?</span><span class="plus" aria-hidden="true">+</span></button>
+          <div class="faq-a"><div>Im Tiefschlaf erholt sich der Körper körperlich am stärksten, der Schlaf ist sehr ruhig. Im REM-Schlaf träumst du intensiv, das Gehirn ist aktiv und verarbeitet Erlebtes. Beide Phasen wechseln sich im Lauf der Nacht ab.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" type="button" aria-expanded="false"><span>Ist es schlimm, vor Mitternacht zu schlafen?</span><span class="plus" aria-hidden="true">+</span></button>
+          <div class="faq-a"><div>Der Spruch „Schlaf vor Mitternacht zählt doppelt“ ist ein Mythos. Wichtiger als die Uhrzeit ist, dass du regelmäßig und passend zu deinem Chronotyp schläfst. Die erholsamsten Tiefschlafphasen liegen ohnehin in der ersten Nachthälfte.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" type="button" aria-expanded="false"><span>Was tun bei Einschlafschwierigkeiten?</span><span class="plus" aria-hidden="true">+</span></button>
+          <div class="faq-a"><div>Hilfreich sind feste Zeiten, ein dunkles, kühles Zimmer, Verzicht auf Bildschirme am Abend und eine ruhige Routine. Wenn du nach 20 Minuten wach liegst, steh kurz auf und tu etwas Entspannendes, statt dich im Bett zu wälzen.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" type="button" aria-expanded="false"><span>Können Entspannungsgeräusche beim Einschlafen helfen?</span><span class="plus" aria-hidden="true">+</span></button>
+          <div class="faq-a"><div>Viele Menschen schlafen mit gleichmäßigen Geräuschen wie Regen oder Rauschen leichter ein, weil störende Umgebungsgeräusche überdeckt werden. Der Effekt ist individuell – probiere aus, was dich beruhigt.</div></div>
+        </div>
+      </div>
+      <div class="faq-group">
+        <h2>⚙️ Technik & Funktionen</h2>
+        <div class="faq-item">
+          <button class="faq-q" type="button" aria-expanded="false"><span>Werden meine Daten gespeichert?</span><span class="plus" aria-hidden="true">+</span></button>
+          <div class="faq-a"><div>Nein. Alle Berechnungen laufen ausschließlich lokal in deinem Browser. Es werden keine Eingaben an einen Server gesendet. Lediglich deine Theme-Einstellung wird lokal auf deinem Gerät gespeichert.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" type="button" aria-expanded="false"><span>Funktioniert der Timer im Hintergrund?</span><span class="plus" aria-hidden="true">+</span></button>
+          <div class="faq-a"><div>Solange der Browser-Tab geöffnet und aktiv bleibt, läuft der Timer zuverlässig. Manche Browser drosseln inaktive Tabs oder pausieren Audio, wenn der Bildschirm gesperrt ist – lass die Seite zum sicheren Betrieb im Vordergrund.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" type="button" aria-expanded="false"><span>Warum kein echter Ton, sondern synthetische Geräusche?</span><span class="plus" aria-hidden="true">+</span></button>
+          <div class="faq-a"><div>Die Geräusche werden in Echtzeit über die Web Audio API erzeugt. Das spart Ladezeit, kommt ohne große Audiodateien aus und funktioniert komplett offline – ganz ohne externe Server.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" type="button" aria-expanded="false"><span>Wie kann ich den Hell-/Dunkel-Modus aktivieren?</span><span class="plus" aria-hidden="true">+</span></button>
+          <div class="faq-a"><div>Klicke oben rechts auf das Mond- bzw. Sonnen-Symbol. Deine Auswahl wird gespeichert und bleibt beim nächsten Besuch erhalten.</div></div>
+        </div>
+      </div>
+      <div class="faq-group">
+        <h2>🛡 Datenschutz</h2>
+        <div class="faq-item">
+          <button class="faq-q" type="button" aria-expanded="false"><span>Welche Daten werden erfasst?</span><span class="plus" aria-hidden="true">+</span></button>
+          <div class="faq-a"><div>Funktional erfassen wir keine personenbezogenen Daten. Es gibt kein Nutzerkonto und keine Anmeldung. Technisch notwendige Daten können beim Hosting über Cloudflare anfallen – Details findest du in der Datenschutzerklärung.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" type="button" aria-expanded="false"><span>Werden Cookies verwendet?</span><span class="plus" aria-hidden="true">+</span></button>
+          <div class="faq-a"><div>Für die Funktion der Seite setzen wir keine Tracking-Cookies. Einstellungen wie das Theme werden über den lokalen Speicher (localStorage) deines Browsers abgelegt und verlassen dein Gerät nicht.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" type="button" aria-expanded="false"><span>Ist die Seite DSGVO-konform?</span><span class="plus" aria-hidden="true">+</span></button>
+          <div class="faq-a"><div>Die Seite ist datensparsam aufgebaut: keine Analyse-Tools, keine Tracking-Cookies ohne Zustimmung, lokale Verarbeitung. Die vollständigen Angaben zu deinen Rechten findest du in der Datenschutzerklärung.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site">
+    <div class="container">
+      <div class="footer-links"><a href="index.html">Rechner</a><a href="schichtplan.html">Schichtplan</a><a href="wissen.html">Wissenswertes</a><a href="faq.html">FAQ</a><a href="hilfe.html">Hilfe</a><a href="kontakt.html">Kontakt</a><a href="ueber-uns.html">Über uns</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></div>
+      <p class="footer-note">© 2025 schlaf-rechner.de · Keine medizinische Beratung · Keine Garantie auf Richtigkeit</p>
+    </div>
+  </footer>
+
+  <div class="cookie-banner" id="cookieBanner" role="dialog" aria-label="Cookie-Hinweis">
+    <div class="container">
+      <div class="cookie-inner">
+        <p class="cookie-text"><strong>Diese Seite arbeitet datensparsam.</strong> Notwendige Speicherung (z.&nbsp;B. dein Theme) bleibt lokal auf deinem Gerät. Details in der <a href="datenschutz.html">Datenschutzerklärung</a>.</p>
+        <div class="cookie-actions">
+          <button class="btn btn-ghost" id="cookieEssential" type="button">Nur notwendige</button>
+          <button class="btn btn-primary" id="cookieAccept" type="button">Alle akzeptieren</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      // --- Theme-Toggle ---
+      var themeBtn = document.getElementById('themeBtn');
+      function applyTheme(t) {
+        document.documentElement.setAttribute('data-theme', t);
+        document.body.setAttribute('data-theme', t);
+        if (themeBtn) themeBtn.textContent = (t === 'dark') ? '☀️' : '🌙';
+      }
+      applyTheme(localStorage.getItem('schlaf_theme') || 'light');
+      if (themeBtn) {
+        themeBtn.addEventListener('click', function () {
+          var next = (document.body.getAttribute('data-theme') === 'dark') ? 'light' : 'dark';
+          localStorage.setItem('schlaf_theme', next);
+          applyTheme(next);
+        });
+      }
+
+      // --- Mobile-Navigation ---
+      var burger = document.getElementById('hamburger');
+      var mnav = document.getElementById('mobileNav');
+      if (burger && mnav) {
+        burger.addEventListener('click', function () {
+          var open = mnav.classList.toggle('open');
+          burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+          burger.textContent = open ? '✕' : '☰';
+        });
+      }
+
+      // --- Cookie-Banner ---
+      var banner = document.getElementById('cookieBanner');
+      if (banner && !localStorage.getItem('cookie-consent')) {
+        setTimeout(function () { banner.classList.add('show'); }, 600);
+      }
+      function consent(value) {
+        localStorage.setItem('cookie-consent', value);
+        if (banner) banner.classList.remove('show');
+      }
+      var acc = document.getElementById('cookieAccept');
+      var ess = document.getElementById('cookieEssential');
+      if (acc) acc.addEventListener('click', function () { consent('all'); });
+      if (ess) ess.addEventListener('click', function () { consent('essential'); });
+    })();
+  </script>
+  <script>
+  (function () {
+    document.querySelectorAll('.faq-q').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var item = btn.closest('.faq-item');
+        var open = item.classList.toggle('open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+    });
+  })();
+  </script>
+</body>
+</html>
