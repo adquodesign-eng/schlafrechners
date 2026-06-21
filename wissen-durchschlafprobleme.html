@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Datenschutzerklärung | schlafrechners.net</title>
-  <meta name="description" content="DSGVO-konforme Datenschutzerklärung: lokale Verarbeitung, localStorage, Cookies, Google AdSense, Cloudflare und deine Rechte.">
+  <title>Durchschlafprobleme | schlafrechners.net</title>
+  <meta name="description" content="Nachts aufzuwachen ist normal – problematisch wird es erst, wenn man danach lange wachliegt. Was hinter Durchschlafproblemen steckt und wie du wieder in den Schlaf findest.">
   <script>
     (function () {
       var t = localStorage.getItem('schlaf_theme') || 'light';
@@ -263,16 +263,73 @@ footer.site {
 
 
 
-.legal { max-width: 760px; }
-.legal h2 { margin-top: 2rem; font-size: 1.3rem; }
-.legal h2:first-of-type { margin-top: 0; }
-.legal p, .legal address { color: var(--muted); font-style: normal; }
-.legal address { line-height: 1.7; }
-.legal strong { color: var(--text); }
-.legal a { word-break: break-word; }
-.legal .card { margin-bottom: 1.25rem; }
-.legal ul { color: var(--muted); padding-left: 1.2rem; }
-.legal li { margin-bottom: .4rem; }
+.article-page { max-width: 820px; }
+.article-page .meta-line { color: var(--muted); font-size: .9rem; margin-bottom: 1rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+.article-page h2 { margin-top: 2.5rem; }
+.article-page h3 { margin-top: 1.5rem; }
+.article-page p { color: var(--text); }
+.article-page .lead { color: var(--muted); }
+.figure { margin: 1.75rem 0; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); padding: 1.25rem 1.25rem .9rem; box-shadow: var(--shadow); }
+.figure svg { width: 100%; height: auto; display: block; }
+.figure figcaption { color: var(--muted); font-size: .82rem; margin-top: .7rem; line-height: 1.5; }
+.figure figcaption strong { color: var(--text); }
+.keybox { display: flex; gap: 1rem; flex-wrap: wrap; margin: .5rem 0 0; }
+.keybox span { display: inline-flex; align-items: center; gap: .4rem; font-size: .82rem; color: var(--muted); }
+.keybox .sw { width: 12px; height: 12px; border-radius: 3px; }
+
+/* SVG-Themefarben */
+.svg-bg { fill: var(--bg); }
+.svg-grid { stroke: var(--border); stroke-width: 1; }
+.svg-axis { stroke: var(--muted); stroke-width: 1.5; }
+.svg-label { fill: var(--muted); font: 600 12px system-ui, sans-serif; }
+.svg-label-sm { fill: var(--muted); font: 500 10px system-ui, sans-serif; }
+.svg-title { fill: var(--text); font: 700 13px system-ui, sans-serif; }
+.svg-line { fill: none; stroke: var(--primary); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+.seg-n1 { fill: #93c5fd; } .seg-n2 { fill: #60a5fa; } .seg-n3 { fill: #3b5bdb; } .seg-rem { fill: #f59e0b; }
+.blk-work { fill: var(--muted); opacity: .35; }
+.blk-sleep { fill: #3b5bdb; opacity: .85; }
+.blk-nap { fill: #f59e0b; opacity: .85; }
+.blk-track { fill: var(--border); }
+
+.risk-list { list-style: none; padding: 0; margin: 1rem 0; display: grid; gap: .6rem; }
+.risk-list li { display: flex; gap: .7rem; align-items: flex-start; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: .8rem 1rem; }
+.risk-list .ic { font-size: 1.2rem; }
+.risk-list p { margin: 0; font-size: .92rem; }
+.risk-list strong { color: var(--text); }
+
+.callout { background: var(--warm-soft); border: 1px solid color-mix(in srgb, var(--warm) 35%, transparent); border-radius: var(--radius); padding: 1.1rem 1.3rem; margin: 1.5rem 0; }
+.callout p { margin: 0; }
+
+.rec-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: .8rem; margin: 1.2rem 0; }
+@media (max-width: 640px) { .rec-grid { grid-template-columns: 1fr; } }
+.rec { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1rem; }
+.rec h4 { margin: 0 0 .3rem; font-size: 1rem; }
+.rec p { margin: 0; color: var(--muted); font-size: .9rem; }
+
+.sources { margin-top: 2.5rem; border-top: 1px solid var(--border); padding-top: 1.5rem; }
+.sources h2 { margin-top: 0; }
+.sources ol { padding-left: 1.3rem; color: var(--muted); font-size: .9rem; }
+.sources li { margin-bottom: .6rem; }
+.sources a { word-break: break-word; }
+.disclaimer { color: var(--muted); font-size: .85rem; margin-top: 1.5rem; font-style: italic; }
+
+.svg-val { fill: var(--text); font: 700 12px system-ui, sans-serif; }
+.svg-area { fill: var(--primary); opacity: .12; }
+.svg-step-t { fill: var(--text); font: 700 12px system-ui, sans-serif; }
+.svg-arrow-t { fill: var(--primary); font: 700 20px system-ui, sans-serif; }
+.step-box { fill: var(--primary-soft); stroke: var(--primary); stroke-width: 1.5; }
+.bar-pri { fill: #3b5bdb; } .bar-acc { fill: #0ea5e9; } .bar-warm { fill: #f59e0b; }
+.bar-grn { fill: #22c55e; } .bar-red { fill: #ef4444; } .bar-ind { fill: #6366f1; }
+.bar-teal { fill: #14b8a6; } .bar-mut { fill: var(--muted); opacity: .45; }
+.tgt-pill { fill: var(--primary-soft); stroke: var(--primary); stroke-width: 1.2; }
+.tgt-val { fill: var(--primary); font: 700 13px system-ui, sans-serif; }
+
+.compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .9rem; }
+@media (max-width: 560px) { .compare-grid { grid-template-columns: 1fr; } }
+.compare-col { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1rem; background: var(--bg); }
+.compare-col h4 { margin: 0 0 .6rem; display: flex; align-items: center; gap: .4rem; }
+.compare-col ul { margin: 0; padding-left: 1.1rem; }
+.compare-col li { font-size: .9rem; color: var(--text); margin-bottom: .35rem; }
 </style>
 </head>
 <body>
@@ -280,7 +337,7 @@ footer.site {
     <div class="container">
       <div class="header-inner">
         <a class="logo" href="index.html"><span class="moon">🌙</span> schlafrechners.net</a>
-        <nav class="main" aria-label="Hauptnavigation"><a href="index.html">Rechner</a><a href="schichtplan.html">Schichtplan</a><a href="wissen.html">Wissen</a><a href="faq.html">FAQ</a><a href="hilfe.html">Hilfe</a></nav>
+        <nav class="main" aria-label="Hauptnavigation"><a href="index.html">Rechner</a><a href="schichtplan.html">Schichtplan</a><a href="wissen.html" class="active">Wissen</a><a href="faq.html">FAQ</a><a href="hilfe.html">Hilfe</a></nav>
         <div class="header-actions">
           <button class="icon-btn" id="themeBtn" type="button" aria-label="Hell-/Dunkelmodus umschalten">🌙</button>
           <button class="icon-btn hamburger" id="hamburger" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobileNav">☰</button>
@@ -291,73 +348,39 @@ footer.site {
   </header>
 
   <section class="page-head">
-    <div class="container">
-      <p class="eyebrow">Rechtliches</p>
-      <h1>Datenschutzerklärung</h1>
-      <p class="lead">Diese Seite ist datensparsam aufgebaut. Im Folgenden erklären wir, welche Daten wann verarbeitet werden.</p>
+    <div class="container article-page">
+      <p class="eyebrow">Schlafstörungen</p>
+      <h1>Durchschlafprobleme</h1>
+      <div class="meta-line">
+        <span>⏱ 6 Min Lesezeit</span>
+        <span>🔬 Mit wissenschaftlichen Quellen</span>
+        <span>🗓 Stand: 2026</span>
+      </div>
+      <p class="lead">Nachts aufzuwachen ist normal – problematisch wird es erst, wenn man danach lange wachliegt. Was hinter Durchschlafproblemen steckt und wie du wieder in den Schlaf findest.</p>
     </div>
   </section>
 
-  <section class="section-sm legal" style="padding-top:.5rem">
-    <div class="container">
-      <div class="card">
-        <h2>1. Verantwortliche Stelle</h2>
-        <address>Christina Baus<br>
-        adquo design<br>
-        Kelsterbacherstraße 72–76<br>
-        64546 Mörfelden-Walldorf<br>
-        Deutschland</address>
-        <p style="margin-top:1rem">E-Mail: <a href="mailto:info@adquo-design.de">info@adquo-design.de</a></p>
+  <section class="section-sm" style="padding-top:.5rem">
+    <div class="container article-page">
+      <h2>Kurzes Erwachen gehört dazu</h2>
+      <p>Am Ende jedes Zyklus nähert sich der Schlaf dem Wachzustand; kurze, oft unbemerkte Wachmomente sind völlig normal. Erst wenn das Wiedereinschlafen schwerfällt und sich das wiederholt, spricht man von einer Durchschlafstörung.</p>
+      <h2>Häufige Auslöser</h2>
+      <ul class="risk-list"><li><span class="ic">🧠</span><p><strong>Stress & Grübeln:</strong> Gedankenkreisen hält den Körper in Alarmbereitschaft.</p></li><li><span class="ic">🍷</span><p><strong>Alkohol:</strong> Hilft beim Einschlafen, fragmentiert aber die zweite Nachthälfte und unterdrückt REM.</p></li><li><span class="ic">😮‍💨</span><p><strong>Schlafapnoe:</strong> Atemaussetzer führen zu wiederholtem Aufwachen – oft mit lautem Schnarchen.</p></li><li><span class="ic">🚻</span><p><strong>Nykturie & Schmerzen:</strong> Häufiger Harndrang oder Beschwerden reißen aus dem Schlaf.</p></li></ul>
+      <figure class="figure"><svg viewBox="0 0 740 156" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Wenn du nachts wachliegst"><text x="20" y="24" class="svg-title">Wenn du nachts wachliegst</text><rect x="43.0" y="58" width="134.9" height="74" rx="12" class="step-box"/><text x="110.5" y="88" text-anchor="middle" class="svg-step-t">Ruhig bleiben</text><text x="110.5" y="106" text-anchor="middle" class="svg-label-sm">nicht auf die</text><text x="110.5" y="119" text-anchor="middle" class="svg-label-sm">Uhr starren</text><text x="197.0" y="100" text-anchor="middle" class="svg-arrow-t">→</text><rect x="216.0" y="58" width="134.9" height="74" rx="12" class="step-box"/><text x="283.5" y="88" text-anchor="middle" class="svg-step-t">Nach ~20 Min</text><text x="283.5" y="106" text-anchor="middle" class="svg-label-sm">aufstehen,</text><text x="283.5" y="119" text-anchor="middle" class="svg-label-sm">Bett verlassen</text><text x="370.0" y="100" text-anchor="middle" class="svg-arrow-t">→</text><rect x="389.0" y="58" width="134.9" height="74" rx="12" class="step-box"/><text x="456.5" y="88" text-anchor="middle" class="svg-step-t">Reizarm</text><text x="456.5" y="106" text-anchor="middle" class="svg-label-sm">gedämpftes Licht,</text><text x="456.5" y="119" text-anchor="middle" class="svg-label-sm">ruhige Tätigkeit</text><text x="543.0" y="100" text-anchor="middle" class="svg-arrow-t">→</text><rect x="562.0" y="58" width="134.9" height="74" rx="12" class="step-box"/><text x="629.5" y="88" text-anchor="middle" class="svg-step-t">Zurück</text><text x="629.5" y="106" text-anchor="middle" class="svg-label-sm">erst bei</text><text x="629.5" y="119" text-anchor="middle" class="svg-label-sm">Müdigkeit</text></svg><figcaption><strong>Abb.:</strong> Stimuluskontrolle – ein Kernbaustein der Verhaltenstherapie bei Insomnie. Quelle: AASM-Leitlinie (CBT-I).<sup>[1]</sup></figcaption></figure>
+      <h2>Wann zum Arzt?</h2>
+      <p>Lautes, unregelmäßiges Schnarchen mit Atempausen, ausgeprägte Tagesmüdigkeit oder monatelange Durchschlafprobleme sollten ärztlich abgeklärt werden – auch, um eine Schlafapnoe auszuschließen.</p>
+
+      <p class="disclaimer">Dieser Beitrag dient der allgemeinen Information und ersetzt keine ärztliche Beratung oder Diagnose. Bei anhaltenden Beschwerden wende dich an eine Ärztin oder einen Arzt.</p>
+
+      <div class="sources">
+        <h2>Quellen</h2>
+        <ol>
+          <li>Edinger JD et al. – Behavioral and psychological treatments for chronic insomnia disorder (AASM Clinical Practice Guideline, J Clin Sleep Med 2021). <a href="https://jcsm.aasm.org/doi/10.5664/jcsm.8986" target="_blank" rel="noopener">https://jcsm.aasm.org/doi/10.5664/jcsm.8986</a></li>
+          <li>Merck Manual (Professional) – Obstructive Sleep Apnea: AHI-Schweregrade und Therapie. <a href="https://www.merckmanuals.com/professional/pulmonary-disorders/sleep-apnea/obstructive-sleep-apnea-osa" target="_blank" rel="noopener">https://www.merckmanuals.com/professional/pulmonary-disorders/sleep-apnea/obstructive-sleep-apnea-osa</a></li>
+        </ol>
       </div>
 
-      <div class="card">
-        <h2>2. Schlafrechner &amp; lokale Verarbeitung</h2>
-        <p>Sämtliche Berechnungen des Schlafrechners und des Timers finden ausschließlich lokal in deinem Browser statt. Deine Eingaben (etwa Uhrzeiten) werden <strong>nicht</strong> an einen Server übertragen. Es gibt kein Nutzerkonto und keine Anmeldung.</p>
-      </div>
-
-      <div class="card">
-        <h2>3. Lokaler Speicher (localStorage)</h2>
-        <p>Wir nutzen den lokalen Speicher deines Browsers (localStorage) ausschließlich für deine Theme-Einstellung (hell/dunkel), deine Cookie-Auswahl und gegebenenfalls zuletzt verwendete Berechnungs-Parameter. Diese Daten verbleiben auf deinem Gerät und verlassen es nicht. Du kannst sie jederzeit über die Einstellungen deines Browsers löschen.</p>
-      </div>
-
-      <div class="card">
-        <h2>4. Cookies &amp; Tracking</h2>
-        <p>Wir setzen nur technisch notwendige Speicherung ein. Es kommt <strong>kein Google Analytics, kein Matomo</strong> und kein vergleichbares Tracking zum Einsatz. Tracking-Cookies werden nicht ohne deine ausdrückliche Zustimmung gesetzt.</p>
-      </div>
-
-      <div class="card">
-        <h2>5. Google AdSense</h2>
-        <p>Zur Finanzierung dieses kostenlosen Angebots können Werbeanzeigen über Google AdSense eingebunden werden. Rechtsgrundlage ist deine Einwilligung gemäß Art. 6 Abs. 1 lit. a DSGVO. Google kann dabei Cookies setzen und Nutzungsdaten verarbeiten. Weitere Informationen findest du in der <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Datenschutzerklärung von Google</a>.</p>
-      </div>
-
-      <div class="card">
-        <h2>6. Cloudflare (Hosting &amp; CDN)</h2>
-        <p>Diese Website wird über Cloudflare, Inc. ausgeliefert. Dabei werden technisch notwendige Daten wie die IP-Adresse und Metadaten verarbeitet, unter anderem zum Schutz vor Angriffen (DDoS-Schutz) und zur Auslieferung der Inhalte. Cloudflare ist unter dem EU-US Data Privacy Framework (DPF) zertifiziert. Details findest du in der <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">Datenschutzerklärung von Cloudflare</a>.</p>
-      </div>
-
-      <div class="card">
-        <h2>7. Keine Analyse-Tools</h2>
-        <p>Wir verzichten bewusst auf Reichweiten- und Analysewerkzeuge. Es findet keine Auswertung deines Nutzungsverhaltens zu statistischen Zwecken statt.</p>
-      </div>
-
-      <div class="card">
-        <h2>8. Deine Rechte</h2>
-        <p>Nach der DSGVO stehen dir folgende Rechte zu:</p>
-        <ul>
-          <li>Auskunft über deine gespeicherten Daten (Art. 15)</li>
-          <li>Berichtigung unrichtiger Daten (Art. 16)</li>
-          <li>Löschung (Art. 17)</li>
-          <li>Einschränkung der Verarbeitung (Art. 18)</li>
-          <li>Datenübertragbarkeit (Art. 20)</li>
-          <li>Widerspruch gegen die Verarbeitung (Art. 21)</li>
-        </ul>
-        <p>Außerdem hast du ein Beschwerderecht bei der zuständigen Aufsichtsbehörde, dem Hessischen Beauftragten für Datenschutz und Informationsfreiheit: <a href="https://datenschutz.hessen.de" target="_blank" rel="noopener">datenschutz.hessen.de</a>.</p>
-      </div>
-
-      <div class="card">
-        <h2>9. Kontakt</h2>
-        <p>Für Fragen zum Datenschutz oder zur Ausübung deiner Rechte schreib uns an <a href="mailto:info@adquo-design.de">info@adquo-design.de</a>.</p>
-      </div>
+      <p style="margin-top:1.5rem"><a href="wissen.html">← Zurück zur Wissensdatenbank</a></p>
     </div>
   </section>
 
